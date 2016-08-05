@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.Suirui.DataStructurer.Processing.Classify;
-import com.Suirui.DataStructurer.Processing.DirController;
 
 public class OriginalFileFinder {
 	private static String RexTime = "(\\d{4} ?年 ?\\d{2} ?月 ?\\d{2} ?日)|(\\d{4} ?- ?\\d{2} ?- ?\\d{2})";
@@ -25,9 +23,7 @@ public class OriginalFileFinder {
 		List<ArrayList<String>> TAP = new ArrayList<ArrayList<String>>();
 
 		ArrayList<String> times = new ArrayList<String>();
-
 		ArrayList<String> persons = new ArrayList<String>();
-
 		ArrayList<String> URL = new ArrayList<String>();
 		ArrayList<String> svm = new ArrayList<String>();
 		
