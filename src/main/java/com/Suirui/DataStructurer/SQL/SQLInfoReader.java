@@ -9,20 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLInfoReader {
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://192.168.62.48/Crawler?useUnicode=true&characterEncoding=utf-8";
-
-	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "redhat";
+	
 
 	private static Connection getConn() {
 
 		Connection conn = null;
 		try {
-			Class.forName(JDBC_DRIVER).newInstance();
+			Class.forName(SQLbasic.JDBC_DRIVER).newInstance();
 			
-			conn = (Connection) DriverManager.getConnection(DB_URL, USER, PASS);
+			conn = (Connection) DriverManager.getConnection(SQLbasic.DB_URL, SQLbasic.USER, SQLbasic.PASS);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

@@ -7,20 +7,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-public class Department {
-	private static ArrayList<ArrayList<String>> governmentInfoList = new ArrayList<ArrayList<String>>();
-	private static ArrayList<String> postfixInfoList = new ArrayList<>();
-	private static ArrayList<String> pagefooter = new ArrayList<>();
-
-	public static void main(String[] args) {
-		preFileReader();
-		List<String> arrayStringList = departmentFinder("test.txt");
-		for (String a : arrayStringList)
-			System.out.println(a);
-	}
+public class DepartmentAndDateFinder {
+	
+	
 
 	// read goverment.txt and postfix.txt
 	public static void preFileReader() {
@@ -47,7 +43,7 @@ public class Department {
 						continue;
 					tempLineList.add(atempString);
 				}
-				governmentInfoList.add(tempLineList);
+				infoFinderExector.governmentInfoList.add(tempLineList);
 
 			}
 			input.close();
@@ -59,7 +55,7 @@ public class Department {
 				for (String atempString : line.split(" ")) {
 					if (atempString.trim().equals(""))
 						continue;
-					postfixInfoList.add(atempString);
+					infoFinderExector.postfixInfoList.add(atempString);
 				}
 			}
 			input2.close();
@@ -73,8 +69,8 @@ public class Department {
 				for (String tempString : aStringList) {
 					if (tempString.trim() == "")
 						continue;
-					pagefooter.add(tempString);
-					//System.out.println(tempString);
+					infoFinderExector.pagefooter.add(tempString);
+
 				}
 			}
 			input3.close();
@@ -97,9 +93,12 @@ public class Department {
 	 * 
 	 * @Param filePath Root-filepath not dirpath!
 	 */
-	public static List<String> departmentFinder(String filePath) {
+	public static Map<String, String> infoFinder(String filePath) {
+		if(infoFinderExector.governmentInfoList==null||infoFinderExector.postfixInfoList==null||infoFinderExector.pagefooter==null)
+		preFileReader();
 		int[] garde = { 0, 0, 0 };
-		List<String> departmentResult = new ArrayList<>();
+		Map<Date, Integer> timeResultMap = new HashMap<>();
+		Map<String, Integer> departmentResultMap = new HashMap<>();
 		// TODO have to improve the efficiency
 		try {
 			BufferedReader input = new BufferedReader(
@@ -108,9 +107,33 @@ public class Department {
 			String line;
 			while ((line = input.readLine()) != null) {
 				String[] aStringList = line.split("。|；|，| ");
-				for (String tempString : aStringList){
-					if(pagefooter.contains(tempString))continue;
-					departmentResult = departmentStringFinder(tempString);}
+				for (String tempString : aStringList) {
+					if (infoFinderExector.pagefooter.contains(tempString))
+						continue;
+
+					// add department info to department-result map
+					List<String> resultofDfinder = departmentStringFinder(tempString);
+					for (String tempResultString : resultofDfinder) {
+
+						if (!departmentResultMap.containsKey(tempResultString))
+							departmentResultMap.put(tempResultString, 0);
+						else {
+							departmentResultMap.put(tempResultString, 1 + departmentResultMap.get(tempResultString));
+						}
+					}
+
+					// add time info to time-result map
+					List<Date> resultofTimefinder = DateFinder.dateFinder(tempString);
+					for (Date tempResultString : resultofTimefinder) {
+
+						if (!timeResultMap.containsKey(tempResultString))
+							timeResultMap.put(tempResultString, 0);
+						else {
+							timeResultMap.put(tempResultString, 1 + timeResultMap.get(tempResultString));
+						}
+					}
+
+				}
 			}
 		} catch (UnsupportedEncodingException e) {
 
@@ -123,7 +146,39 @@ public class Department {
 			e.printStackTrace();
 		}
 
-		return departmentResult;
+		Map<String, String> InfoFinderResult = new HashMap<>();
+		int MaxVal = 0;
+		String MaxKey = "";
+		Date Creattime=null, Deadline=null, Max = null;
+		for (Entry<String, Integer> entry : departmentResultMap.entrySet()) {
+			if (entry.getValue() > MaxVal) {
+				MaxVal = entry.getValue();
+				MaxKey = entry.getKey();
+			}
+		}
+		MaxVal = 0;
+		for (Entry<Date, Integer> entry : timeResultMap.entrySet()) {
+			if (entry.getValue() > MaxVal) {
+				MaxVal = entry.getValue();
+				Max=entry.getKey();
+			}
+			if(Creattime==null){
+				Creattime=entry.getKey();
+			}
+			if(Deadline==null){
+				Deadline=entry.getKey();
+				continue;
+			}
+			if(Creattime.after(entry.getKey()))Creattime=entry.getKey();
+			if(!Deadline.after(entry.getKey()))Deadline=entry.getKey();
+		}
+
+		InfoFinderResult.put("Department", MaxKey);
+		InfoFinderResult.put("CreatDate", Creattime.toString());
+		InfoFinderResult.put("Deadline", Deadline.toString());
+		InfoFinderResult.put("MaxDate", Max.toString());
+		
+		return InfoFinderResult;
 	}
 
 	public static List<String> departmentStringFinder(String line) {
@@ -131,17 +186,18 @@ public class Department {
 		int[] garde = { 0, 0, 0 };
 		// match level-1 goverment.txt + postfix.txt
 
-		for (int i = 0; i < governmentInfoList.size(); i++) {
-			for (int j = 0; j < governmentInfoList.get(i).size(); j++) {
-				String supGovString = governmentInfoList.get(i).get(0), govString = governmentInfoList.get(i).get(j);
+		for (int i = 0; i < infoFinderExector.governmentInfoList.size(); i++) {
+			for (int j = 0; j < infoFinderExector.governmentInfoList.get(i).size(); j++) {
+				String supGovString = infoFinderExector.governmentInfoList.get(i).get(0), govString = infoFinderExector.governmentInfoList.get(i).get(j);
 				int tempFlag = 0;
 				if (line.contains(govString))
-					for (int k = 0; k < postfixInfoList.size(); k++) {
-						String postfixString = postfixInfoList.get(k);
+					for (int k = 0; k < infoFinderExector.postfixInfoList.size(); k++) {
+						String postfixString = infoFinderExector.postfixInfoList.get(k);
 						if (line.contains(govString + postfixString)) {
 							if (!departmentResult.contains(supGovString + " " + govString)) {
 								departmentResult.add(supGovString + " " + govString);
-								System.out.println(line + '\n' + supGovString + " " + govString + "-" + postfixString);
+								// System.out.println(line + '\n' + supGovString
+								// + " " + govString + "-" + postfixString);
 							}
 							tempFlag = 1;
 							garde[0]++;
@@ -159,6 +215,17 @@ public class Department {
 
 			}
 		}
+
 		return departmentResult;
+	}
+	
+	
+	public static void main(String []args){
+		Map<String, String>ans=infoFinder("test.txt");
+		for (Entry<String, String> entry : ans.entrySet()){
+			System.out.println(entry.getKey());
+			System.out.println(entry.getValue());
+		}
+		
 	}
 }
