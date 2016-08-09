@@ -94,6 +94,7 @@ public class DepartmentAndDateFinder {
 	 * @Param filePath Root-filepath not dirpath!
 	 */
 	public static Map<String, String> infoFinder(String filePath) {
+		Map<String, String> InfoFinderResult = new HashMap<>();
 		if(infoFinderExector.governmentInfoList==null||infoFinderExector.postfixInfoList==null||infoFinderExector.pagefooter==null)
 		preFileReader();
 		int[] garde = { 0, 0, 0 };
@@ -104,8 +105,9 @@ public class DepartmentAndDateFinder {
 			BufferedReader input = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath)), "utf-8"));
 			// match level-1 goverment.txt + postfix.txt
-			String line;
+			String line,urlString=null;
 			while ((line = input.readLine()) != null) {
+				if(urlString==null){urlString=line;InfoFinderResult.put("URL", urlString);}
 				String[] aStringList = line.split("。|；|，| ");
 				for (String tempString : aStringList) {
 					if (infoFinderExector.pagefooter.contains(tempString))
@@ -146,7 +148,7 @@ public class DepartmentAndDateFinder {
 			e.printStackTrace();
 		}
 
-		Map<String, String> InfoFinderResult = new HashMap<>();
+		
 		int MaxVal = 0;
 		String MaxKey = "";
 		Date Creattime=null, Deadline=null, Max = null;
