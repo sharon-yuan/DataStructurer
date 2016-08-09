@@ -116,7 +116,7 @@ public class DepartmentAndDateFinder {
 					for (String tempResultString : resultofDfinder) {
 
 						if (!departmentResultMap.containsKey(tempResultString))
-							departmentResultMap.put(tempResultString, 0);
+							departmentResultMap.put(tempResultString, 1);
 						else {
 							departmentResultMap.put(tempResultString, 1 + departmentResultMap.get(tempResultString));
 						}
@@ -127,7 +127,7 @@ public class DepartmentAndDateFinder {
 					for (Date tempResultString : resultofTimefinder) {
 
 						if (!timeResultMap.containsKey(tempResultString))
-							timeResultMap.put(tempResultString, 0);
+							timeResultMap.put(tempResultString, 1);
 						else {
 							timeResultMap.put(tempResultString, 1 + timeResultMap.get(tempResultString));
 						}
@@ -174,8 +174,13 @@ public class DepartmentAndDateFinder {
 		}
 
 		InfoFinderResult.put("Department", MaxKey);
-		InfoFinderResult.put("CreatDate", Creattime.toString());
+		if(Creattime==null)InfoFinderResult.put("CreatDate",null);
+		else InfoFinderResult.put("CreatDate", Creattime.toString());
+		if(Deadline==null)InfoFinderResult.put("Deadline",null);
+		else
 		InfoFinderResult.put("Deadline", Deadline.toString());
+		if(Max==null)InfoFinderResult.put("MaxDate",null);
+		else
 		InfoFinderResult.put("MaxDate", Max.toString());
 		
 		return InfoFinderResult;

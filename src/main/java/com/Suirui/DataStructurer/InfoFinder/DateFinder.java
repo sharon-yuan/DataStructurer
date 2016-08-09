@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class DateFinder {
 public static ArrayList<Date> dateFinder (String tempLine) {
-String RexTime = "(\\d{4} ?年 ?((\\d{2})|(\\d{1})) ?月 ?\\d{2} ?日)|(\\d{4} ?- ?((\\d{2})|(\\d{1})) ?- ?\\d{2})",rexg="[0-9]{4}-";
+String RexTime = "(\\d{4} ?年 ?((\\d{2})|(\\d{1})) ?月 ?((\\d{2})|(\\d{1})) ?日)|(\\d{4} ?- ?((\\d{2})|(\\d{1})) ?- ?((\\d{2})|(\\d{1})))",rexg="[0-9]{4}-";
 ArrayList<java.sql.Date> times = new ArrayList<>();
 	Pattern pat = Pattern.compile(RexTime);
 	Matcher mat = pat.matcher(tempLine);

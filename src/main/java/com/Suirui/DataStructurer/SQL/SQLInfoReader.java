@@ -11,33 +11,14 @@ import java.util.List;
 public class SQLInfoReader {
 	
 
-	private static Connection getConn() {
-
-		Connection conn = null;
-		try {
-			Class.forName(SQLbasic.JDBC_DRIVER).newInstance();
-			
-			conn = (Connection) DriverManager.getConnection(SQLbasic.DB_URL, SQLbasic.USER, SQLbasic.PASS);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-		
-			e.printStackTrace();
-		}
-		return conn;
-	}
+	
 
 	public static List<ArrayList<String[]>> CityReader() {
 
 		List<ArrayList<String[]>> Loactions = new ArrayList<ArrayList<String[]>>();
 		ArrayList<String[]> Cities = new ArrayList<String[]>();
 		ArrayList<String[]> Counties = new ArrayList<String[]>();
-		Connection conn = getConn();
+		Connection conn = SQLbasic.getConn();
 		Statement stmt = null;
 		try {
 
@@ -98,8 +79,44 @@ public class SQLInfoReader {
 		Loactions.add(Cities);
 		Loactions.add(Counties);
 		return Loactions;
-
+	}
 	
+	public static ArrayList<String> stringFormReader(String formName,ArrayList<String>attri){
+		ArrayList<String> resultArray=new ArrayList<>();
+		Connection conn = SQLbasic.getConn();
+		
+		try {
+			Statement stmt =conn.createStatement();;
+			String sql = "SELECT * FROM "+formName;
+			System.out.println(sql);
+			stmt.execute(sql);
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+
+				String aTempString="";
+				for(int index=0;index<attri.size();index++)
+					aTempString=aTempString+rs.getString(attri.get(index))+" ";
+				resultArray.add(aTempString);
+
+			}
+		} catch (SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		
+		
+		return resultArray;
+		
+		
+	}
+	
+	public static ArrayList<String> LocationsReader(){
+		ArrayList<String>attri=new ArrayList<>();
+		attri.add("County");attri.add("City");attri.add("Province");
+		
+		
+		return stringFormReader("Locations",attri);
 		
 	}
 }
