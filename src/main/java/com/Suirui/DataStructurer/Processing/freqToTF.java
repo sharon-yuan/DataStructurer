@@ -68,6 +68,23 @@ public class freqToTF {
 	}
 	
 	
+public static void main(String []args){
 
+	String fileDirPath = "E:/data/china/dfgk/";
+	
+	//Preprocessor.word2TF(fileDirPath);
+	File dir = new File(DirController.DirChanger(fileDirPath, "-seg"));
+	String outDir = DirController.DirChanger(fileDirPath, "-TF");
+	File outDirFile = new File(outDir);
+	if (!outDirFile.isDirectory())
+		outDirFile.mkdirs();
+	File[] files = dir.listFiles();
+	for (File tempF : files) {
+		File tempTFF=new File(outDir + tempF.getName());
+		if(!tempTFF.exists())
+		f2TF(tempF.getPath(), outDir + tempF.getName());
+	}
+	
+}
 	
 }

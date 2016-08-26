@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import com.Suirui.DataStructurer.KNN.*;
+import com.Suirui.DataStructurer.SQL.SQLInfoWriter;
 
 /*
  * get classify by KNN or SVM
@@ -30,10 +32,12 @@ public class Classify {
 		String fileDirPath = "E:/data/china/dfgk/";
 		
 		//Preprocessor.word2TF(fileDirPath);
+		
 		exector(DirController.DirChanger(fileDirPath, "-TF"));
 
 	}
 
+	@SuppressWarnings("unused")
 	private static void printFile(String filePath) {
 		try {
 			BufferedReader input = new BufferedReader(
@@ -69,6 +73,7 @@ public class Classify {
 	}
 	public static int ClassInfo(String filePath,String knnCodeFilePath) {
 	
+		@SuppressWarnings("unused")
 		File outFile=new File(knnCodeFilePath);
 		//if (!outFile.exists()) 
 		TF2Vector.SinglefileExector(filePath, knnCodeFilePath);
@@ -83,23 +88,23 @@ System.out.println("exector to classify the files at: "+fileTFDirPath);
 		File knnFile=new File(knnDir);
 		if(!knnFile.isDirectory())
 			knnFile.mkdirs();
-		File dir = new File(fileTFDirPath);
-		File[] files = dir.listFiles();
+		File TFdir = new File(fileTFDirPath);
+		File[] TFfiles = TFdir.listFiles();
 
-		for (File tempfile : files) {
+		for (File tempTFfile : TFfiles) {
 			
-			if (tempfile.getName().contains("Merge"))
+			if (tempTFfile.getName().contains("Merge"))
 				continue;
 			
 				sum++;
-				
-				if (ClassInfo(tempfile.getPath(),knnDir+tempfile.getName()) == 1) {
-					printFile(DirController.DirRoot(fileTFDirPath)+tempfile.getName());
+				int tempFlag=ClassInfo(tempTFfile.getPath(),knnDir+tempTFfile.getName());
+				if (1==tempFlag) {
+					//printFile(DirController.DirRoot(fileTFDirPath)+tempTFfile.getName());
 					System.out.println(svm++ + " " + sum);
 				}
 				else{
 				
-					String fileRoot=tempfile.getName();
+					String fileRoot=tempTFfile.getName();
 					File tempaaaaafile=new File(DirController.DirRoot(fileTFDirPath)+fileRoot);
 					if (tempaaaaafile.exists())
 					{//printFile(DirController.DirRoot(fileTFDirPath)+fileRoot);
@@ -108,6 +113,11 @@ System.out.println("exector to classify the files at: "+fileTFDirPath);
 					else
 						System.err.println(tempaaaaafile.getName());
 				}
+				ArrayList<String> classResultArray=new ArrayList<>();
+				File tempOFile=new File(DirController.DirRoot(fileTFDirPath)+tempTFfile.getName());
+				classResultArray.add(tempOFile.getPath());classResultArray.add(tempFlag+"");
+				SQLInfoWriter.SQLStringListWriter("classifyResult", classResultArray);
+				
 			
 		}
 		System.out.println(svm + " " + sum + " " + (double) svm / (double) sum);

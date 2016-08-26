@@ -68,7 +68,7 @@ public class freqToTF {
 	}
 
 	public static void main(String[] args) {
-		String className = "ForC";
+		
 
 		// String filepath = "C:/Users/wangsy/Desktop/biding/content" +
 		// className + "/";

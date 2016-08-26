@@ -1,7 +1,6 @@
 package com.Suirui.DataStructurer.SQL;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -101,7 +100,7 @@ public class SQLInfoReader {
 
 			}
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
+
 			e.printStackTrace();
 		}
 		
@@ -115,7 +114,7 @@ public class SQLInfoReader {
 		ArrayList<String>attri=new ArrayList<>();
 		attri.add("County");attri.add("City");attri.add("Province");
 		
-		
+		System.out.println("locationReader");
 		return stringFormReader("Locations",attri);
 		
 	}

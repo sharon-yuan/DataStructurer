@@ -53,6 +53,7 @@ public class LexicalAnalyzer {
 
 	public static void wordSegFromFile(String filePath) {
 File input=new File(filePath );
+@SuppressWarnings("unused")
 File output=new File(filePath + "-seg");
 
 WordFrequencyStatistics wordFrequencyStatistics = new WordFrequencyStatistics("word-frequency-statistics.txt",SegmentationAlgorithm.MaxNgramScore);

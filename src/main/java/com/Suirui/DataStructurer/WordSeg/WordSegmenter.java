@@ -128,7 +128,7 @@ public class WordSegmenter {
         Utils.seg(input, output, true, SegmentationAlgorithm.MaxNgramScore);
     }
     private static void demo(){
-        long start = System.currentTimeMillis();
+     
         List<String> sentences = new ArrayList<>();
         sentences.add("杨尚川是APDPlat应用级产品开发平台的作者");
         sentences.add("他说的确实在理");
@@ -184,12 +184,8 @@ public class WordSegmenter {
         sentences.add("中国的首都是北京");
         sentences.add("老师说明天下午休息");
         sentences.add("今天下雨");
-        int i=1;
-        for(String sentence : sentences){
-            List<Word> words = segWithStopWords(sentence);
-           
-        }
-        long cost = System.currentTimeMillis() - start;
+      
+       
       
     }
     public static void processCommand(String... args) {
@@ -210,7 +206,8 @@ public class WordSegmenter {
                         for(int i=1; i<args.length; i++){
                             str.append(args[i]).append(" ");
                         }
-                        List<Word> words = segWithStopWords(str.toString());
+                        @SuppressWarnings("unused")
+						List<Word> words = segWithStopWords(str.toString());
                       
                     }
                     break;
@@ -226,7 +223,7 @@ public class WordSegmenter {
                     for(String a : args){
                         str.append(a).append(" ");
                     }
-                    List<Word> words = segWithStopWords(str.toString());
+                    @SuppressWarnings("unused") List<Word> words = segWithStopWords(str.toString());
                  
                     break;
             }

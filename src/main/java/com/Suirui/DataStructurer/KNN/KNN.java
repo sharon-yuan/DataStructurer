@@ -4,9 +4,7 @@ package com.Suirui.DataStructurer.KNN;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -67,6 +65,7 @@ public class KNN {
 				times = wordsWeight.get(i);
 			} else
 				times = 1;
+			@SuppressWarnings("unused")
 			double tempdis = testFinal.get(i) - dataList.get(i);
 			distance += Math.pow(testFinal.get(i) - dataList.get(i), 2) * times;
 

@@ -15,32 +15,41 @@ import java.util.Map.Entry;
 import com.Suirui.DataStructurer.SQL.SQLInfoReader;
 
 public class CityFinder {
-	public static void main(String[] args) {
-		cityFinder("test.txt");
-	}
-
+public static void main(String []args){
+	while(true)
+	cityFinder("test.txt");
+}
 	public static String cityFinder(String filePath) {
-		ArrayList<String> cityList = SQLInfoReader.LocationsReader();
-		Map<String, Integer> resultCountyMap = new HashMap();
-		Map<String, Integer> resultCityMap = new HashMap();
-
+		System.gc();
+		ArrayList<String>cityList=new ArrayList<>();
+		
+		
+		Map<String, Integer> resultCountyMap = new HashMap<String, Integer>();
+		Map<String, Integer> resultCityMap = new HashMap<String, Integer>();
+		String line;
 		try {
+			BufferedReader inputCityInfo = new BufferedReader(
+					new InputStreamReader(new FileInputStream(new File("CityInfo.txt")), "utf-8"));
+			while((line=inputCityInfo.readLine())!=null)
+				cityList.add(line);
+			inputCityInfo.close();
+			
 			BufferedReader input = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath)), "utf-8"));
-			String line;
+			
 			String tempCityNameForLoop="";
 			while ((line = input.readLine()) != null) {
-				
+				String []linesplitArray=line.split(" ");
 			
-				for(String splitLine:line.split(" ")){
+				for(String splitLine:linesplitArray){
 				
 				for (String atempCountyString : cityList) {
 					if (!atempCountyString.contains(" "))
 						continue;
-					
-					if (splitLine.contains(atempCountyString.split(" ")[0])) {
-						if (atempCountyString.split(" ")[0].trim().equals("")
-								|| atempCountyString.split(" ")[0] == null)
+					String[] tempStringArray=atempCountyString.split(" ");
+					if (splitLine.contains(tempStringArray[0])) {
+						if (tempStringArray[0].trim().equals("")
+								|| tempStringArray[0] == null)
 							continue;
 						int freq = 1;
 						if (resultCountyMap.containsKey(atempCountyString)) {
@@ -48,37 +57,39 @@ public class CityFinder {
 						}
 						resultCountyMap.put(atempCountyString, freq);
 					}
-					if(!tempCityNameForLoop.equals(atempCountyString.split(" ")[1])){
+					if(!tempCityNameForLoop.equals(tempStringArray[1])){
 						
-						tempCityNameForLoop=atempCountyString.split(" ")[1];
+						tempCityNameForLoop=tempStringArray[1];
 					if (splitLine.contains(tempCityNameForLoop)) {
 						
-						if (atempCountyString.split(" ")[0].trim().equals("")
-								|| atempCountyString.split(" ")[0] == null)
+						if (tempStringArray[0].trim().equals("")
+								|| tempStringArray[0] == null)
 							continue;
-						String tempKey = atempCountyString.split(" ")[1] + " " + atempCountyString.split(" ")[2];
+						String tempKey = tempStringArray[1] + " " +tempStringArray[2];
 						int freq = 1;
 						if (resultCityMap.containsKey(tempKey))
 							freq = resultCityMap.get(tempKey) + 1;
 
 						resultCityMap.put(tempKey, freq);
+						tempKey=null;
 					}}
-				}}
-			}
+					tempStringArray=null;}
+				}
+				linesplitArray=null;}
+			tempCityNameForLoop=null;
+			input.close();
 		} catch (UnsupportedEncodingException e) {
-			// TODO 自动生成的 catch 块
+		
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO 自动生成的 catch 块
+		
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
+			
 			e.printStackTrace();
 		}
-		for (Entry<String, Integer> entryCity : resultCityMap.entrySet()) {
-			System.out.println(entryCity.getKey()+"  "+entryCity.getValue());
-		}
-		String resultString = null;
+		
+		String resultString = "null null";
 		// 判断哪个地点可信度更高
 		for (Entry<String, Integer> entryCounty : resultCountyMap.entrySet()) {
 			boolean flag = false;
@@ -93,13 +104,19 @@ public class CityFinder {
 				
 
 			}
+			if(!flag){
+				resultCityMap.put(entryCounty.getKey().split(" ")[1]+" "+entryCounty.getKey().split(" ")[2], 1);
+			}
 		}
 		int maxVal=0;
 		for (Entry<String, Integer> entryCity : resultCityMap.entrySet()) {
 			if(entryCity.getValue()>maxVal){resultString=entryCity.getKey();maxVal=entryCity.getValue();}
 			
 		}
-System.out.println("CityFinder result: "+resultString+" "+maxVal);
+		resultCountyMap=null;
+		resultCityMap=null;
+		cityList=null;
+		line=null;
 		return resultString;
 	}
 

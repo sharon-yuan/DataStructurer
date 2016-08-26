@@ -14,6 +14,7 @@ public class cityReader {
 public static void main(String []args){
 	List<ArrayList<String>>locationArray=new ArrayList<>();
 	try {
+		@SuppressWarnings("resource")
 		BufferedReader input = new BufferedReader(
 				new InputStreamReader(new FileInputStream(new File("forCity.txt")), "utf-8"));
 	String line,prov=null,city=null;
@@ -48,10 +49,12 @@ public static void main(String []args){
 		e.printStackTrace();
 	}
 	for(ArrayList<String >aList :locationArray){
+		
 		for(String aString:aList)
 			System.out.print (aString+" ");
 		System.out.println();
+		SQLInfoWriter.SQLStringListWriter("Locations", aList);
 	}
-	SQLInfoWriter.SQLStringListWriter("Locations", locationArray);
+	
 }
 }
