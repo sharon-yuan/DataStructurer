@@ -28,12 +28,11 @@ public class Preprocessor {
 	 * 
 	 */
 	public static void contrastDataSet(String targetDirPath, String noiseDirPath) {
-		word2TF(targetDirPath);
-		word2TF(noiseDirPath);
+		//word2TF(targetDirPath);
+		//word2TF(noiseDirPath);
 
 		// chooseKeyWord
-		choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),
-				DirController.DirChanger(noiseDirPath, "-TF"));
+		//choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),DirController.DirChanger(noiseDirPath, "-TF"));
 
 		// get data files=>"data"
 		TF2Vector.WholeDirExector(DirController.DirChanger(targetDirPath, "-TF"), "targetResult", 1);
@@ -49,13 +48,31 @@ public class Preprocessor {
 
 			BufferedReader input = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath1)), "utf-8"));
-			while ((line = input.readLine()) != null)
-				output.write(line + '\n');
+			while ((line = input.readLine()) != null){
+				String aStringlist[]=line.split(" ");
+				double sum=0.0;
+				for(int i=0;i<aStringlist.length-1;i++){
+					sum+=Double.valueOf(aStringlist[i]);
+				}
+				if(sum!=0.0)
+				output.write(line + '\n');}
 			input.close();
+			int temp1=0;
 			BufferedReader input2 = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath2)), "utf-8"));
 			while ((line = input2.readLine()) != null)
-				output.write(line + '\n');
+			{
+				String aStringlist[]=line.split(" ");
+				double sum=0.0;
+				for(int i=0;i<aStringlist.length-1;i++){
+					sum+=Double.valueOf(aStringlist[i]);
+				}
+				if(sum==0.0&&temp1==0){
+					temp1=1;
+					output.write(line + '\n');
+				}
+				else if(sum!=0.0)
+				output.write(line + '\n');}
 			input2.close();
 			output.close();
 		} catch (IOException e) {
@@ -96,9 +113,9 @@ public class Preprocessor {
 	}
 
 	public static void main(String[] args) {
-	/*	String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
+	String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
 
-		contrastDataSet(targetFilePath, noiseFilePath);*/
+		contrastDataSet(targetFilePath, noiseFilePath);/*
 		String inputDir="E:/data/test/data/";
 		// get TF
 				File dir = new File(DirController.DirChanger(inputDir, "-seg"));
@@ -110,7 +127,7 @@ public class Preprocessor {
 				for (File tempF : files) {
 
 					freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName());
-				}
+				}*/
 	}
 
 }

@@ -57,7 +57,8 @@ public class TestKNN {
 			testKnnIns.read(testDatas, testFilePath);
 			List<Double> test = testDatas.get(0);			
 			KNN knn = new KNN();
-			return (int) Math.round(Double.valueOf(knn.knn(datas, test,3)));
+			//TODO change the value of K
+			return (int) Math.round(Double.valueOf(knn.knn(datas, test,10)));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,7 +100,7 @@ public class TestKNN {
 				int tempResult=10;
 				if(result.size()>0)
 				tempResult = (int) Math.round(result.get(i));
-				int tempAns = (int) Math.round(Double.valueOf(knn.knn( datas, test, 10)));
+				int tempAns = (int) Math.round(Double.valueOf(knn.knn( datas, test,3)));
 				System.out.println(i + " 实际类别为: " + tempResult + "   判定为:" + tempAns);
 
 				if (tempAns != tempResult) {

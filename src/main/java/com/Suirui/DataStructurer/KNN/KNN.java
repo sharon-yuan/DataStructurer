@@ -67,7 +67,7 @@ public class KNN {
 				times = 1;
 			@SuppressWarnings("unused")
 			double tempdis = testFinal.get(i) - dataList.get(i);
-			distance += Math.pow(testFinal.get(i) - dataList.get(i), 2) * times;
+			distance += Math.abs(testFinal.get(i) - dataList.get(i)) * times;
 
 		}
 		return distance;
@@ -77,7 +77,7 @@ public class KNN {
 		BufferedReader inputData, keywordsData;
 
 		inputData = new BufferedReader(new InputStreamReader(
-				new FileInputStream(new File("keywords.txt")), "utf-8"));
+				new FileInputStream(new File("chosedKeyForChina.txt")), "utf-8"));
 		keywordsData = new BufferedReader(
 				new InputStreamReader(new FileInputStream(new File("WeightedKeyword.txt")), "utf-8"));
 		Map<String, Integer> wordandWeight = new HashMap<>();

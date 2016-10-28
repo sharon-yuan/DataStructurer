@@ -173,7 +173,7 @@ public class TF2Vector {
 	// 将chosedKeyForSichuan.txt中的内容存入程序 keys
 
 	public static void readKeyfile() {
-		readKeyfile("keywords.txt");
+		readKeyfile("chosedKeyForChina.txt");
 	}
 
 	public static void readKeyfile(String filePath) {

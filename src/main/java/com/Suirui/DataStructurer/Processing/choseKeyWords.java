@@ -133,7 +133,7 @@ System.out.println("get autoKey. Saved in " +"--chosedKeyForChina.txt");
 		
 		BufferedWriter output;
 		try {
-			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path+"chosedKeyForSuirui.txt")),"utf-8"));
+			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path+"chosedKeyForChina.txt")),"utf-8"));
 			for(int i=0;i<contentAns.size();i++){
 				output.write(contentAns.get(i).get(0)+'\n');
 				
@@ -245,7 +245,7 @@ System.out.println("get autoKey. Saved in " +path);
 				
 				BufferedWriter output;
 				try {
-					output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("chosedKeyForSuirui.txt")),"utf-8"));
+					output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("chosedKeyForChina.txt")),"utf-8"));
 					for(int i=0;i<contentAns.size();i++){
 						output.write(contentAns.get(i).get(0)+'\n');
 						
@@ -255,7 +255,7 @@ System.out.println("get autoKey. Saved in " +path);
 					e.printStackTrace();
 				}
 				
-		System.out.println("get autoKey. Saved in chosedKeyForSuirui.txt");
+		System.out.println("get autoKey. Saved in chosedKeyForChina.txt");
 			
 			
 	}

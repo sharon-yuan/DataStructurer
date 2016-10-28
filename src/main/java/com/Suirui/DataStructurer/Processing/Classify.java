@@ -29,7 +29,7 @@ public class Classify {
 		 */
 		
 		
-		String fileDirPath = "E:/data/china/dfgk/";
+		String fileDirPath = "E:/data/china/dfgk";
 		
 		//Preprocessor.word2TF(fileDirPath);
 		
@@ -99,11 +99,11 @@ System.out.println("exector to classify the files at: "+fileTFDirPath);
 				sum++;
 				int tempFlag=ClassInfo(tempTFfile.getPath(),knnDir+tempTFfile.getName());
 				if (1==tempFlag) {
-					//printFile(DirController.DirRoot(fileTFDirPath)+tempTFfile.getName());
+					printFile(DirController.DirRoot(fileTFDirPath)+tempTFfile.getName());
 					System.out.println(svm++ + " " + sum);
 				}
 				else{
-				
+				if(sum%100==0) System.out.println(svm + " " + sum);
 					String fileRoot=tempTFfile.getName();
 					File tempaaaaafile=new File(DirController.DirRoot(fileTFDirPath)+fileRoot);
 					if (tempaaaaafile.exists())
@@ -116,11 +116,11 @@ System.out.println("exector to classify the files at: "+fileTFDirPath);
 				ArrayList<String> classResultArray=new ArrayList<>();
 				File tempOFile=new File(DirController.DirRoot(fileTFDirPath)+tempTFfile.getName());
 				classResultArray.add(tempOFile.getPath());classResultArray.add(tempFlag+"");
-				SQLInfoWriter.SQLStringListWriter("classifyResult", classResultArray);
+			//	SQLInfoWriter.SQLStringListWriter("classifyResult", classResultArray);
 				
 			
 		}
-		System.out.println(svm + " " + sum + " " + (double) svm / (double) sum);
+		System.out.println("判定为1个数： "+svm + " 总数： " + sum + " 比例： " + (double) svm / (double) sum);
 
 	}
 
