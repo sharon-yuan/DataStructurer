@@ -70,7 +70,7 @@ public class freqToTF {
 	
 public static void main(String []args){
 
-	String fileDirPath = "E:/data/china/dfgk/";
+	String fileDirPath = "E:/data/china/ChinaForYes-seg";
 	
 	//Preprocessor.word2TF(fileDirPath);
 	File dir = new File(DirController.DirChanger(fileDirPath, "-seg"));

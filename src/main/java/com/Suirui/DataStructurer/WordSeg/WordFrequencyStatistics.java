@@ -26,7 +26,6 @@ import org.apdplat.word.segmentation.Segmentation;
 import org.apdplat.word.segmentation.SegmentationAlgorithm;
 import org.apdplat.word.segmentation.SegmentationFactory;
 import org.apdplat.word.segmentation.Word;
-import org.apdplat.word.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,6 +152,7 @@ public class WordFrequencyStatistics {
      * @throws Exception
      */
     public void seg(File input, File output) throws Exception{
+    	System.err.println(output.getParentFile()+"----++++++++++-----"+output.getAbsolutePath());
         Utils.seg(input, output, isRemoveStopWord(), segmentation.getSegmentationAlgorithm(), word -> statistics(word, 1, statisticsMap));
     }
 

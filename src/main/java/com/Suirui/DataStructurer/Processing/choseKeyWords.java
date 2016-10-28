@@ -73,9 +73,9 @@ System.out.println("get autoKey. Saved in " +path);
 	
 	public static void main(String[] args) {
 
-		String path = "D:/sharon/done/sczf/";
-		getListFromFile(path + "sichuan-yes/", contentYesMap);
-		getListFromFile(path + "sichuan-no/", contentNoMap);
+		String path = "E:/data/china/";
+		getListFromFile(path + "ChinaForYes-seg/", contentYesMap);
+		getListFromFile(path + "ChinaForNo-seg/", contentNoMap);
 		 Map<String, Double> contentAnsMap = contentYesMap;
 //gothough contentnomap, calu the value=yes.value-no.value
 		Iterator<Map.Entry<String, Double>> iter = contentNoMap.entrySet().iterator();
@@ -98,7 +98,7 @@ System.out.println("get autoKey. Saved in " +path);
 		}
 		BufferedWriter output;
 		try {
-			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(path+"chosedKeyForSichuan.txt")),"utf-8"));
+			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File("chosedKeyForChina.txt")),"utf-8"));
 			for(int i=0;i<contentAns.size();i++){
 				output.write(contentAns.get(i).get(0)+'\n');
 				
@@ -108,7 +108,7 @@ System.out.println("get autoKey. Saved in " +path);
 			e.printStackTrace();
 		}
 		
-System.out.println("get autoKey. Saved in " +path);
+System.out.println("get autoKey. Saved in " +"--chosedKeyForChina.txt");
 	}
 	public static void getAns(String className){
 //ClassName=>contentForSuirui    contentForYes
@@ -166,7 +166,7 @@ System.out.println("get autoKey. Saved in " +path);
 			i++;
 		}
 		if(i>0)contentAns.add(i, keys);		
-		while(contentAns.size()>10)contentAns.remove(0);
+		while(contentAns.size()>20)contentAns.remove(0);
 
 	}
 	private static void Jug(String key, double val,int size) {
@@ -200,7 +200,7 @@ System.out.println("get autoKey. Saved in " +path);
 			if(val<tempdouble)break;
 		}
 		if(i>0)contentAns.add(i, keys);
-		while(contentAns.size()>10)contentAns.remove(0);
+		while(contentAns.size()>20)contentAns.remove(0);
 
 	}
 	private static void getListFromFile(String path, Map<String, Double> contentMap) {

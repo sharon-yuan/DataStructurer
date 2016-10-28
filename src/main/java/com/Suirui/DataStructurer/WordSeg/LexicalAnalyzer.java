@@ -65,13 +65,13 @@ wordFrequencyStatistics.setRemoveStopWord(true);
 			//WordSegmenter.segWithStopWords(input,output);
 			//WordFrequencyStatistics.getWordFre(filePath + ".txt", filePath + "-seg.txt");
 			try {
-				wordFrequencyStatistics.seg(input, new File("text-seg-result.txt"));
+				wordFrequencyStatistics.seg(input, new File("E:/data/text-seg-result.txt"));
 				
 			} catch (Exception e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
-			wordFrequencyStatistics.dump(filePath + "-seg.txt");
+			wordFrequencyStatistics.dump(filePath + "-seg");
 		
 	}
 

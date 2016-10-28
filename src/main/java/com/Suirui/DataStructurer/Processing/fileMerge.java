@@ -94,7 +94,7 @@ public class fileMerge {
 	}
 	
 	public static void main(String []args){
-		String className="ForC";
+		String className="ForYes";
 		String path = "C:/Users/wangsy/Desktop/biding/content" + className + "/";
 		Merge(className);
 		System.out.println("merged!");
