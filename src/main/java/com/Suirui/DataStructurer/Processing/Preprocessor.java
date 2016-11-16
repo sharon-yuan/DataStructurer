@@ -32,7 +32,7 @@ public class Preprocessor {
 		//word2TF(noiseDirPath);
 
 		// chooseKeyWord
-		//choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),DirController.DirChanger(noiseDirPath, "-TF"));
+		choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),DirController.DirChanger(noiseDirPath, "-TF"));
 
 		// get data files=>"data"
 		TF2Vector.WholeDirExector(DirController.DirChanger(targetDirPath, "-TF"), "targetResult", 1);
@@ -72,7 +72,7 @@ public class Preprocessor {
 					output.write(line + '\n');
 				}
 				else if(sum!=0.0)
-				output.write(line + '\n');}
+ 				output.write(line + '\n');}
 			input2.close();
 			output.close();
 		} catch (IOException e) {
@@ -115,7 +115,8 @@ public class Preprocessor {
 	public static void main(String[] args) {
 	String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
 
-		contrastDataSet(targetFilePath, noiseFilePath);/*
+		contrastDataSet(targetFilePath, noiseFilePath);
+		/*
 		String inputDir="E:/data/test/data/";
 		// get TF
 				File dir = new File(DirController.DirChanger(inputDir, "-seg"));

@@ -1,5 +1,6 @@
 package com.Suirui.DataStructurer.SQL;
 
+import com.Suirui.DataStructurer.Util.FileIO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLInfoReader {
-	
-
-	
 
 	public static List<ArrayList<String[]>> CityReader() {
 
@@ -29,7 +27,7 @@ public class SQLInfoReader {
 			list2level.add("County");
 
 			sql = "SELECT * FROM City";
-			
+
 			stmt.execute(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -79,23 +77,24 @@ public class SQLInfoReader {
 		Loactions.add(Counties);
 		return Loactions;
 	}
-	
-	public static ArrayList<String> stringFormReader(String formName,ArrayList<String>attri){
-		ArrayList<String> resultArray=new ArrayList<>();
+
+	public static ArrayList<String> stringFormReader(String formName, ArrayList<String> attri) {
+		ArrayList<String> resultArray = new ArrayList<>();
 		Connection conn = SQLbasic.getConn();
-		
+
 		try {
-			Statement stmt =conn.createStatement();;
-			String sql = "SELECT * FROM "+formName;
+			Statement stmt = conn.createStatement();
+			;
+			String sql = "SELECT * FROM " + formName;
 			System.out.println(sql);
 			stmt.execute(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 
-				String aTempString="";
-				for(int index=0;index<attri.size();index++)
-					aTempString=aTempString+rs.getString(attri.get(index))+" ";
+				String aTempString = "";
+				for (int index = 0; index < attri.size(); index++)
+					aTempString = aTempString + rs.getString(attri.get(index)) + " ";
 				resultArray.add(aTempString);
 
 			}
@@ -103,19 +102,50 @@ public class SQLInfoReader {
 
 			e.printStackTrace();
 		}
-		
-		
+
 		return resultArray;
-		
-		
+
 	}
-	
-	public static ArrayList<String> LocationsReader(){
-		ArrayList<String>attri=new ArrayList<>();
-		attri.add("County");attri.add("City");attri.add("Province");
-		
+
+	public static ArrayList<String> LocationsReader() {
+		ArrayList<String> attri = new ArrayList<>();
+		attri.add("County");
+		attri.add("City");
+		attri.add("Province");
+
 		System.out.println("locationReader");
-		return stringFormReader("Locations",attri);
-		
+		return stringFormReader("Locations", attri);
+
+	}
+
+	public static void SQLinfoSaver(String formName,ArrayList<String>attri, String Path, String name) {
+		// ArrayList<String> resultArray=new ArrayList<>();
+		Connection conn = SQLbasic.getConn();
+		String filename = "";
+		try {
+			Statement stmt = conn.createStatement();
+			String sumAttriString=name;
+			for(String tmpAttriString:attri){
+				sumAttriString+=", "+tmpAttriString;
+			}
+			String sql = "SELECT "+sumAttriString+" FROM " + formName;
+			System.out.println(sql);
+			stmt.execute(sql);
+			ResultSet rs = stmt.executeQuery(sql);
+			// ﻿id, URL, fileContent, grade, renew, scope, location, aptitude
+			while (rs.next()) {
+				filename = rs.getString(name);
+				String aTempString="";
+				for(String tmpAttriString:attri)
+				aTempString += " "+rs.getString(tmpAttriString);
+				FileIO.saveintoFile(Path + filename, aTempString);
+				// resultArray.add(aTempString);
+
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
 	}
 }

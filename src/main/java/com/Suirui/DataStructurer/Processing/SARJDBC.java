@@ -237,7 +237,7 @@ public class SARJDBC {
 			
 			
 		} catch (Exception e) {
-			// TODO �Զ����ɵ� catch ��
+		
 			e.printStackTrace();
 		}
 		

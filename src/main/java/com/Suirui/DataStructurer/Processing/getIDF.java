@@ -26,9 +26,9 @@ public class getIDF {
 		 * 
 		 * 
 		 * input.close(); } catch (UnsupportedEncodingException |
-		 * FileNotFoundException e) { // TODO �Զ����ɵ� catch �� e.printStackTrace();
-		 * } catch (NumberFormatException e) { // TODO �Զ����ɵ� catch ��
-		 * e.printStackTrace(); } catch (IOException e) { // TODO �Զ����ɵ� catch ��
+		 * FileNotFoundException e) {e.printStackTrace();
+		 * } catch (NumberFormatException e) { 
+		 * e.printStackTrace(); } catch (IOException e) { 
 		 * e.printStackTrace(); }
 		 */
 		try {
@@ -37,7 +37,7 @@ public class getIDF {
 
 			input.close();
 		} catch (IOException e) {
-			// TODO �Զ����ɵ� catch ��
+		
 			e.printStackTrace();
 		}
 

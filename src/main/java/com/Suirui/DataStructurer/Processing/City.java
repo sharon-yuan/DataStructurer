@@ -23,7 +23,7 @@ public class City {
 	}
 
 	public static void main(String[] args) {
-		// TODO �Զ����ɵķ������
+		
 		String filePath = "C:/Users/wangsy/Desktop/biding/forCity.txt";
 		try {
 			BufferedReader input = new BufferedReader(
@@ -61,7 +61,7 @@ public class City {
 			
 			input.close();
 		} catch (Exception e) {
-			// TODO �Զ����ɵ� catch ��
+			
 			e.printStackTrace();
 		}
 

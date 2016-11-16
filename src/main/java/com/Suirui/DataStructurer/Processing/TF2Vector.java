@@ -459,5 +459,61 @@ public class TF2Vector {
 	public static void getAns(String className, int type) {
 		exector(className, type);
 	}
+	
+	
+	/**
+	 * 
+	 * @param mode train/test
+	 * @param data 
+	 * @param target 1-5 
+	 * @param qid 1-5 the set number of train data
+	 * @return one line of tarin data for SVMRanking
+	 */
+	public static String vector4SVMRanking(String mode, List<Double> data,int target,int qid){
+		
+		/*The file format for the training data (also testing/validation data) is the same as for SVM-Rank. This is also the format used in LETOR datasets. Each of the following lines represents one training example and is of the following format:
+		<line> .=. <target> qid:<qid> <feature>:<value> <feature>:<value> ... <feature>:<value> # <info>
+		<target> .=. <positive integer>
+		<qid> .=. <positive integer>
+		<feature> .=. <positive integer>
+		<value> .=. <float>
+		<info> .=. <string>
+		Here's an example: (taken from the SVM-Rank website). Note that everything after "#" are ignored.
+		3 qid:1 1:1 2:1 3:0 4:0.2 5:0 
+		2 qid:1 1:0 2:0 3:1 4:0.1 5:1 
+		1 qid:1 1:0 2:1 3:0 4:0.4 5:0 
+		1 qid:1 1:0 2:0 3:1 4:0.3 5:0  
+		1 qid:2 1:0 2:0 3:1 4:0.2 5:0  
+		2 qid:2 1:1 2:0 3:1 4:0.4 5:0  
+		1 qid:2 1:0 2:0 3:1 4:0.1 5:0 
+		1 qid:2 1:0 2:0 3:1 4:0.2 5:0  
+		2 qid:3 1:0 2:0 3:1 4:0.1 5:1 
+		3 qid:3 1:1 2:1 3:0 4:0.3 5:0 
+		4 qid:3 1:1 2:0 3:0 4:0.4 5:1 
+		1 qid:3 1:0 2:1 3:1 4:0.5 5:0 */
+		
+		String anString=target+ " qid:"+qid;
+		for(int i=0;i<data.size();i++){
+			if(0.0==data.get(i)) continue;
+			anString+=" "+i+":"+data.get(i);
+		}
+		
+		
+		return anString;
+	}
+	
+	/**
+	 * 
+	 * @param mode  train/test
+	 * @param data 
+	 * @param target 1 or 0
+	 * @return
+	 */
+public static String vector4KNN(String mode, List<Double> data,int target){
+	String anString="";
+	
+	return anString;
+	
+}
 
 }

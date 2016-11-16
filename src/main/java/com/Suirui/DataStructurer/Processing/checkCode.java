@@ -34,7 +34,7 @@ public class checkCode {
 
     
 	public static String getAns(String text) {
-		// TODO �Զ����ɵķ������
+		
 		return checkCode.MD5(text);
 	}
 }

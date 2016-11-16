@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import com.Suirui.DataStructurer.WordSeg.LexicalAnalyzer;
-//@�ϲ��ļ�
+
 public class fileMerge {
 	public static void Merge(String className)  {
 		String filePath = "C:/Users/wangsy/Desktop/biding/content"+className+"/";

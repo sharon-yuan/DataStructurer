@@ -160,7 +160,7 @@ public class KNN {
 			int c = node.getC(), val = 1;
 			if (c == 1) {
 				// System.out.println(c);
-				val = 3;
+				val = 10;
 			}
 			if (classCount.containsKey(c)) {
 				classCount.put(c, classCount.get(c) + val);

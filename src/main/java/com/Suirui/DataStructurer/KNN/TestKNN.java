@@ -58,7 +58,7 @@ public class TestKNN {
 			List<Double> test = testDatas.get(0);			
 			KNN knn = new KNN();
 			//TODO change the value of K
-			return (int) Math.round(Double.valueOf(knn.knn(datas, test,10)));
+			return (int) Math.round(Double.valueOf(knn.knn(datas, test,1)));
 
 		} catch (Exception e) {
 			e.printStackTrace();
