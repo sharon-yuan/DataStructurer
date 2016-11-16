@@ -1,11 +1,17 @@
 package com.Suirui.DataStructurer.Util;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+
+import com.mysql.jdbc.Buffer;
 
 public class FileIO {
 	/**
@@ -35,6 +41,28 @@ public class FileIO {
 		}
 		
 		return true;
+		
+	}
+	
+	public static String readfromFile(String filePath){
+		String result="",line;
+		BufferedReader input;
+		try {
+			input=new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)), "utf-8"));
+			while ((line=input.readLine()) !=null){
+				result+=line+" ";
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 		
 	}
 

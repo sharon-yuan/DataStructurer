@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SQLInfoReader {
@@ -118,27 +119,45 @@ public class SQLInfoReader {
 
 	}
 
-	public static void SQLinfoSaver(String formName,ArrayList<String>attri, String Path, String name) {
+	/**
+	 * read data form SQL table name is(formName), save data into dir(path),
+	 * filename is name(which is the val of the raw named name)
+	 * 
+	 * @param formName
+	 *            city, grade....
+	 * @param attri
+	 *            not included UID(filename)
+	 * @param Path
+	 *            ended with"/",if Path==null doesn't save data into local, save it into hashmap and return it
+	 * @param name
+	 *            filename(UID in table)
+	 */
+	public static HashMap<String, String> SQLinfoSaver(String formName, ArrayList<String> attri, String Path, String name) {
 		// ArrayList<String> resultArray=new ArrayList<>();
 		Connection conn = SQLbasic.getConn();
+		HashMap<String, String> result = new HashMap<>();
 		String filename = "";
 		try {
 			Statement stmt = conn.createStatement();
-			String sumAttriString=name;
-			for(String tmpAttriString:attri){
-				sumAttriString+=", "+tmpAttriString;
+			String sumAttriString = name;
+			for (String tmpAttriString : attri) {
+				sumAttriString += ", " + tmpAttriString;
 			}
-			String sql = "SELECT "+sumAttriString+" FROM " + formName;
+			String sql = "SELECT " + sumAttriString + " FROM " + formName;
 			System.out.println(sql);
 			stmt.execute(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			// ﻿id, URL, fileContent, grade, renew, scope, location, aptitude
 			while (rs.next()) {
 				filename = rs.getString(name);
-				String aTempString="";
-				for(String tmpAttriString:attri)
-				aTempString += " "+rs.getString(tmpAttriString);
-				FileIO.saveintoFile(Path + filename, aTempString);
+				String aTempString = "";
+				for (String tmpAttriString : attri)
+					aTempString += rs.getString(tmpAttriString) + " ";
+				if (Path != null)
+					FileIO.saveintoFile(Path + filename, aTempString);
+				else {
+					result.put(filename, aTempString);
+				}
 				// resultArray.add(aTempString);
 
 			}
@@ -147,5 +166,5 @@ public class SQLInfoReader {
 			e.printStackTrace();
 		}
 
-	}
+	return result;}
 }
