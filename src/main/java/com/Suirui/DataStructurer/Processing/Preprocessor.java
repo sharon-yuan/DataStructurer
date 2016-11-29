@@ -90,14 +90,14 @@ public class Preprocessor {
 			return;
 		}
 		System.out.println("dir file seg");
-		Executor.dirsWordSeg(DirController.DirRoot(inputDir), DirController.DirChanger(inputDir, "-seg"));
+		//Executor.dirsWordSeg(DirController.DirRoot(inputDir), DirController.DirChanger(inputDir, "-seg"));
 		// file merged
 		// get Mergerd.txt & Merged-Seg.txt
-		fileMerge.MergeSegDir(DirController.DirChanger(inputDir, "-seg"));
+		//fileMerge.MergeSegDir(DirController.DirChanger(inputDir, "-seg"));
 		System.out.println("files merged! dir:" + inputDir);
-		WordFrequencyStatistics.executor(DirController.DirChanger(inputDir, "-seg") + "Merged",
+		/*WordFrequencyStatistics.executor(DirController.DirChanger(inputDir, "-seg") + "Merged",
 				DirController.DirChanger(inputDir, "-seg") + "Merged-seg");
-
+*/
 		// get TF
 		File dir = new File(DirController.DirChanger(inputDir, "-seg"));
 		String outDir = DirController.DirChanger(inputDir, "-TF");
@@ -106,16 +106,16 @@ public class Preprocessor {
 			outDirFile.mkdirs();
 		File[] files = dir.listFiles();
 		for (File tempF : files) {
-
+if(!tempF.exists())
 			freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName());
 		}
 
 	}
 
 	public static void main(String[] args) {
-	String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
-
-		contrastDataSet(targetFilePath, noiseFilePath);
+	//String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
+word2TF("E:/data/china/dfgk-seg/");
+		//contrastDataSet(targetFilePath, noiseFilePath);
 		/*
 		String inputDir="E:/data/test/data/";
 		// get TF

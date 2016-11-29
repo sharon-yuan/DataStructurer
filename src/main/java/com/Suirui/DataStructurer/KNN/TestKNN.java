@@ -47,18 +47,22 @@ public class TestKNN {
 	}
 
 	public static int getAns(String testFilePath) {
-
+System.out.println("testKNN getAns"+testFilePath);
 		TestKNN testKnnIns = new TestKNN();
 		String datafile = "data";
 		try {
+			System.out.println("12"+datafile);
+			System.out.println("112"+testFilePath);
 			List<List<Double>> datas = new ArrayList<List<Double>>();
 			List<List<Double>> testDatas = new ArrayList<List<Double>>();
 			testKnnIns.read(datas, datafile);
 			testKnnIns.read(testDatas, testFilePath);
-			List<Double> test = testDatas.get(0);			
+			List<Double> test = testDatas.get(0);
+			
+			System.out.println("TestKNN"+datas.size()+"/"+test.size());
 			KNN knn = new KNN();
 			//TODO change the value of K
-			return (int) Math.round(Double.valueOf(knn.knn(datas, test,1)));
+			return (int) Math.round(Double.valueOf(knn.knn(datas, test,5)));
 
 		} catch (Exception e) {
 			e.printStackTrace();

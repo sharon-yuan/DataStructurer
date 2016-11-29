@@ -66,6 +66,7 @@ public static final Connection conn = SQLbasic.getConn();
 		DepartAndDate=null;Location=null;
 		
 		ArrayList<String> tempLineString=new ArrayList<>();
+		tempLineString.add(tempF.getName());
 		for (Entry<String, String> entry : InfoResult.entrySet()) {
 			//output.write(entry.getValue()+" ");
 			tempLineString.add(entry.getValue());
@@ -73,8 +74,11 @@ public static final Connection conn = SQLbasic.getConn();
 		}
 		InfoResult=null;
 		tempLineString.add(tempF.getPath());
-		SQLInfoWriter.SQLStringListWriter("info", tempLineString);
-		tempLineString=null;
+		for(String tempString:tempLineString)
+			System.out.println("info--"+tempString);
+		
+		SQLInfoWriter.SQLStringListWriter("dfgkInfo", tempLineString);
+		//tempLineString=null;
 		
 		//output.write(tempF.getPath()+'\n');
 		}

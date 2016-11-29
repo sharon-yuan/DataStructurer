@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import com.Suirui.DataStructurer.InfoFinder.CityFinder;
 import com.Suirui.DataStructurer.KNN.*;
 import com.Suirui.DataStructurer.SQL.SQLInfoWriter;
 
@@ -96,7 +97,7 @@ public class Classify {
 			
 				
 			}
-			if(tempFlag!=1) return 0;
+			//if(tempFlag!=1) return 0;
 			//else return 1;
 			
 		} catch (UnsupportedEncodingException e) {
@@ -135,13 +136,14 @@ public class Classify {
 				if(line.contains("视频会议")) {
 				
 					tempFlag=1;
-					break;
+					
 				}
+				
 			
 				
 			}
 			if(tempFlag!=1) return null;
-			//else return 1;
+		
 			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -252,8 +254,8 @@ public class Classify {
 						e.printStackTrace();
 					}
 					
-					classResultArray.add(tempTFfile.getName());classResultArray.add(URL);classResultArray.add(fileContent);
-					SQLInfoWriter.SQLStringListWriter("classifyResultRanking", classResultArray);
+					classResultArray.add(tempTFfile.getName());
+					SQLInfoWriter.SQLStringListWriter("dfgkUID", classResultArray);
 				}
 				else{
 				if(sum%500==0) System.out.println(svm + " " + sum);
@@ -267,7 +269,7 @@ public class Classify {
 						System.err.println(tempaaaaafile.getName());
 				}
 				
-				
+			
 			
 		}
 		System.out.println("判定为1个数： "+svm + " 总数： " + sum + " 比例： " + (double) svm / (double) sum);

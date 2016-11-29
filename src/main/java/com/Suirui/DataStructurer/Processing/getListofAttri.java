@@ -15,22 +15,39 @@ import com.Suirui.DataStructurer.Util.FileIO;
  *
  */
 public class getListofAttri {
-	// UID, URL, fileContent, grade, renew, scope, location, aptitude
+	// UID, URL, fileContent, grade, renew, scope, size, company, produce
+	//将完整的文件夹 分为类别 等级 存入 E:/data/china/grade/
 	public static void main(String[] args) {
-		String[] filedNames = { "grade", "renew", "scope", "location", "aptitude" };
-		String Path = "E:/data/china/grade/";
+		String[] dirTypes={"","-seg"};
+		//
+		String[] filedNames = { "grade", "renew", "scope", "size", "company","produce" };
+		//输出路径
+		String Path = "E:/data/china/forGrade/";
 
-		int[] filedScope = { 5, 2, 4, 3, 3 };
+		int[] filedScope = { 5, 2, 4, 3, 2,2 };
+		for(int h=0;h<dirTypes.length;h++)
 		for (int i = 0; i < filedNames.length; i++)
-			for (int j = 1; j <= filedScope[i]; j++) {
-				File dir=new File(Path + filedNames[i] + "-" + j + "/");
+			for (int j = 0; j <= filedScope[i]; j++) {
+				System.out.println(dirTypes[h]+"- -"+filedNames[i]+"- -"+j+"/"+filedScope[i]);
+				ArrayList<String> tempFileList = getListofOneAttri(filedNames[i], j + "");
+				System.out.println("wenjiangeshu"+tempFileList.size());
+				if(tempFileList.size()==0)continue;
+				
+				/*File dir=new File(DirController.DirChanger(Path + filedNames[i] + "-" + j + "/",dirTypes[h]));
 				if(!dir.isDirectory()){
 					dir.mkdirs();
-				}
-				ArrayList<String> tempFileList = getListofOneAttri(filedNames[i], j + "");
+				}*/
+				
+				
 				for (String fileName : tempFileList) {
-					String content = FileIO.readfromFile("E:/data/china/gradeResult/"+fileName);
-					FileIO.saveintoFile(Path + filedNames[i] + "-" + j + "/" + fileName, content);
+					
+					//更改这个路径作为输入路径
+					String content = FileIO.readfromFile(DirController.DirChanger("E:/data/china/gradeTitle/",dirTypes[h])+fileName);
+					FileIO.saveintoFile(DirController.DirChanger(Path + filedNames[i] + "Title-" + j + "/",dirTypes[h])+ fileName, content);
+					
+					 content = FileIO.readfromFile(DirController.DirChanger("E:/data/china/gradeResult/",dirTypes[h])+fileName);
+					FileIO.saveintoFile(DirController.DirChanger(Path + filedNames[i] + "-" + j + "/",dirTypes[h])+ fileName, content);
+					//System.out.println("saved into"+DirController.DirChanger(Path + filedNames[i] + "Title-" + j + "/",dirTypes[h])+ fileName);
 				}
 
 				// FileIO.saveintoFile(filedNames[i]+"-"+j,
@@ -38,7 +55,13 @@ public class getListofAttri {
 			}
 
 	}
-
+/**
+ * CONNECT SQL get file name list 
+ * 从数据库读取相应属性的文件名list
+ * @param attri
+ * @param val
+ * @return
+ */
 	public static ArrayList<String> getListofOneAttri(String attri, String val) {
 		ArrayList<String> result = new ArrayList<>();
 		HashMap<String, String> infoMap = getMapFromSQL(attri);
@@ -56,12 +79,11 @@ public class getListofAttri {
 		return result;
 
 	}
-
 	public static HashMap<String, String> getMapFromSQL(String attr) {
 
 		ArrayList<String> attris = new ArrayList<>();
 		attris.add(attr);
-		HashMap<String, String> result = SQLInfoReader.SQLinfoSaver("grade", attris, null, "UID");
+		HashMap<String, String> result = SQLInfoReader.SQLinfoSaver("gradeV4", attris, null, "UID");
 		return result;
 
 	}

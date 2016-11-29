@@ -3,9 +3,14 @@ package com.Suirui.DataStructurer.Processing;
 import java.io.File;
 
 public class DirController {
-
+/**
+ * dir change to -seg -knn or -TF OR ""
+ * @param inputPath
+ * @param type ""什么都不做
+ * @return
+ */
 	public static String DirChanger(String inputPath, String type) {
-		
+		if(type.equals(""))return inputPath;
 		if (type.equals("-seg") || type.equals("-TF")||type.equals("-knn"))
 			;
 		else {

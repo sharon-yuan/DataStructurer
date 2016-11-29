@@ -290,7 +290,7 @@ public class WordFrequencyStatistics {
     	 WordFrequencyStatistics wordFrequencyStatistics = new WordFrequencyStatistics();
          wordFrequencyStatistics.setRemoveStopWord(true);
          wordFrequencyStatistics.setResultPath(outputPath+"-tmp");
-         wordFrequencyStatistics.setSegmentationAlgorithm(SegmentationAlgorithm.MaxNgramScore);
+         wordFrequencyStatistics.setSegmentationAlgorithm(SegmentationAlgorithm.MinimumMatching);
          //开始分词
         wordFrequencyStatistics.reset();
          //对文件进行分词

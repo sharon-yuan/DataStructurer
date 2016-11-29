@@ -1,21 +1,13 @@
 package com.Suirui.DataStructurer.InfoFinder;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.mysql.fabric.xmlrpc.base.Array;
-
+import java.util.HashMap;
 public class DepartmentAndDateFinder {
 
 	// read goverment.txt and postfix.txt
@@ -202,7 +194,9 @@ public class DepartmentAndDateFinder {
 				}
 				int pageNumber = PagenumberGetter.dfgk(urlString);
 				if (pageNumber != 0) {
-					System.err.println("pageNumber:" + pageNumber + " URL:" + urlString);
+					System.err.println("pageNumber:" + pageNumber
+							//+ " URL:" + urlString
+							);
 					input.close();
 					governmentInfoList = null;
 					compInfoList = null;

@@ -9,11 +9,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.Suirui.DataStructurer.WordSeg.StopWord;
 
 public class choseKeyWords {
 	class Node {
@@ -29,7 +33,7 @@ public class choseKeyWords {
 
 	public static Map<String, Double> contentYesMap = new HashMap<String, Double>();
 	public static Map<String, Double> contentNoMap = new HashMap<String, Double>();
-	public static List<ArrayList<String>> contentAns = new ArrayList<ArrayList<String>>();
+public static List<ArrayList<String>> contentAns = new ArrayList<ArrayList<String>>();
 
 	// v1.0
 	/*
@@ -63,12 +67,98 @@ public class choseKeyWords {
 	 * 
 	 * System.out.println("get autoKey. Saved in " +path); }
 	 */
+	public static void getKeys(){
+		/*String path = "E:/data/china/forGrade/";
+		getListFromFile(path + "renew-1-TF/", contentYesMap);
+		getListFromFile(path + "renew-2-TF/", contentNoMap);*/
+		String path = "E:/data/china/";
+		getListFromFile(path + "ChinaForYes-TF/", contentYesMap);
+		getListFromFile(path + "ChinaForNo-TF/", contentNoMap);
+		
+		Map<String, Double> contentAnsMap=new HashMap<>();
+		contentAnsMap.putAll(contentYesMap);
+		contentAnsMap.putAll(contentNoMap);
+		
+		Iterator<Map.Entry<String, Double>> iter = contentAnsMap.entrySet().iterator();
+		
+		while (iter.hasNext()) {
+			Entry<String, Double> entry = iter.next();
+			String key = entry.getKey();
+			if(!StopWord.JugStopWord(key)){ contentAnsMap.put(key, 0.0);continue;}
+			boolean showTages=false;
+			if(key.equals("日")){System.err.println("-----------------");System.out.println(Double.valueOf(contentYesMap.get(key))+"-"+Double.valueOf(contentNoMap.get(key))+"="+Math.abs(Double.valueOf(contentYesMap.get(key))-Double.valueOf(contentNoMap.get(key))));
+			showTages=true;
+			}
+			
+			if(contentNoMap.get(key)==null){
+				if(showTages)
+				System.out.println(key+"not find at NoMap");
+				contentNoMap.put(key, 0.0);
+			}
+			if(contentYesMap.get(key)==null){
+				if(showTages)
+				System.out.println(key+"not find at YesMap");
+				
+				contentYesMap.put(key, 0.0);
+			}
+			//System.out.println(contentYesMap.get(key)+" "+contentNoMap.get(key));
+			if(contentNoMap.get(key)==0.0||contentYesMap.get(key)==0.0)
+				if(showTages)
+			System.out.println(Double.valueOf(contentYesMap.get(key))+"-"+Double.valueOf(contentNoMap.get(key))+"="+Math.abs(Double.valueOf(contentYesMap.get(key))-Double.valueOf(contentNoMap.get(key))));
+			double val = Double.valueOf(contentYesMap.get(key))-Double.valueOf(contentNoMap.get(key));
+			if(val<0) val=val*(-0.1);
+			if(val==0.0){
+				if(showTages)
+				System.out.println(key+" "+Double.valueOf(contentYesMap.get(key))+"-"+Double.valueOf(contentNoMap.get(key))+"="+Math.abs(Double.valueOf(contentYesMap.get(key))-Double.valueOf(contentNoMap.get(key))));
+			}
+			contentAnsMap.put(key, val);
+		}
+		/*// gothough contentansMap
+				iter = contentAnsMap.entrySet().iterator();
+				while (iter.hasNext()) {
+					Entry<String, Double> entry = iter.next();
+					String key = entry.getKey().toString();
+					double val = Double.valueOf(entry.getValue().toString());
+					Jug(key, val, (int) Math.round(0.02 * contentAnsMap.size()));
+				}*/
+				 List<Map.Entry<String, Double>> list_Data = new ArrayList<Map.Entry<String, Double>>(contentAnsMap.entrySet()); 
+				Collections.sort( list_Data,new Comparator<Map.Entry<String, Double>>() {
+
+					@Override
+					public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
+						if(o1.getValue()>o2.getValue())return -1;
+						else if(o1.getValue()<o2.getValue())return 1;
+						else return 0;
+					}
+				} );
+				BufferedWriter output;
+				File outputFile=new File("chosedKeyForChina.txt");
+				try {
+					output = new BufferedWriter(
+							new OutputStreamWriter(new FileOutputStream(outputFile), "utf-8"));
+					for (int i = 0; i < Math.round(0.01*list_Data.size()); i++) {
+						String keyresult=list_Data.get(i).getKey();
+						output.write(keyresult+
+								//" /(NoMap)"+contentNoMap.get(keyresult)+" -(YesMap)"+contentYesMap.get(keyresult)+" = "+list_Data.get(i).getValue()+ 
+								'\n');
+
+					}
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+System.out.println(contentYesMap.size()+" "+contentNoMap.size()+" "+contentAnsMap.size());
+				System.out.println("get autoKey. Saved in " + outputFile.getAbsolutePath());
+	}
 
 	public static void main(String[] args) {
+		
+		getKeys();
+		/*
 
-		String path = "E:/data/china/";
-		getListFromFile(path + "ChinaForYes-seg/", contentYesMap);
-		getListFromFile(path + "ChinaForNo-seg/", contentNoMap);
+		String path = "E:/data/china/forGrade/";
+		getListFromFile(path + "renewTitle-2-TF/", contentYesMap);
+		getListFromFile(path + "renewTitle-1-TF/", contentNoMap);
 		Map<String, Double> contentAnsMap = contentYesMap;
 		// gothough contentnomap, calu the value=yes.value-no.value
 		Iterator<Map.Entry<String, Double>> iter = contentNoMap.entrySet().iterator();
@@ -92,7 +182,7 @@ public class choseKeyWords {
 		BufferedWriter output;
 		try {
 			output = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(new File("chosedKeyForChina.txt")), "utf-8"));
+					new OutputStreamWriter(new FileOutputStream(new File("chosedKeyForRenew.txt")), "utf-8"));
 			for (int i = 0; i < contentAns.size(); i++) {
 				output.write(contentAns.get(i).get(0) + '\n');
 
@@ -102,8 +192,8 @@ public class choseKeyWords {
 			e.printStackTrace();
 		}
 
-		System.out.println("get autoKey. Saved in " + "--chosedKeyForChina.txt");
-	}
+		System.out.println("get autoKey. Saved in " + "--chosedKeyForRenew.txt");
+	*/}
 
 	public static void getAns(String className) {
 		// ClassName=>contentForSuirui contentForYes
@@ -143,7 +233,11 @@ public class choseKeyWords {
 
 	}
 
-	//
+	/**
+	 * 去除停用词 按大小存入list contentAns
+	 * @param key
+	 * @param val
+	 */
 	private static void Jug(String key, double val) {
 		if (key.length() == "是".length())
 			return;
@@ -171,7 +265,8 @@ public class choseKeyWords {
 			contentAns.remove(0);
 
 	}
-
+	
+	@SuppressWarnings("unused")
 	private static void Jug(String key, double val, int size) {
 		if (key.length() == "是".length())
 			return;
@@ -214,7 +309,8 @@ public class choseKeyWords {
 
 	}
 
-	/* save content of file into Map */
+	/**
+	 *  save content of file into Map */
 	private static void getListFromFile(String path, Map<String, Double> contentMap) {
 		String str = "";
 		BufferedReader input;

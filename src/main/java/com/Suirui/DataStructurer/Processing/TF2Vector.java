@@ -94,9 +94,14 @@ public class TF2Vector {
 		}
 	}
 
-	// type==0 欧式距离
-	// type ==1 tfidf
+	
+	/**
+	 * 
+	 * @param key 
+	 * @param type type==0 欧式距离 type ==1 tfidf
+	 */
 	private static void distance(List<String> key, int type) {
+	
 		result = new ArrayList<Double>();
 		for (String aString : keys) {
 			if (resultMap.containsKey(aString)) {
@@ -107,7 +112,7 @@ public class TF2Vector {
 			} else
 				result.add(0.0);
 		}
-
+		
 	}
 
 	public static void saveCodeIntoFile(String inputFilePath, String outputFilePath) throws IOException {
@@ -170,12 +175,17 @@ public class TF2Vector {
 
 	}
 
-	// 将chosedKeyForSichuan.txt中的内容存入程序 keys
+	/**
+	 * 将chosedKeyForChina.txt中的内容存入程序 keys
+	 */
 
 	public static void readKeyfile() {
 		readKeyfile("chosedKeyForChina.txt");
 	}
-
+/**
+ * save into private static List<String> keys;
+ * @param filePath
+ */
 	public static void readKeyfile(String filePath) {
 		keys = new ArrayList<>();
 		// 得到commonkeys
@@ -191,6 +201,7 @@ public class TF2Vector {
 					keys.add(a);
 				}
 				input.close();
+				System.out.println("keys size:"+keys.size());
 			} else {
 				System.err.println("commonkeys 不存在");
 				return;
@@ -217,10 +228,10 @@ public class TF2Vector {
 			// className;
 			// File dir = new File(filepath);
 			// File[] files = dir.listFiles();
-			File file = new File(filePath);
+			File inputfile = new File(filePath);
 
 			readKeyfile();
-			File resultFile = new File("D:/sharon/knn/webpageInfo/tempans.txt");
+			File resultFile = new File("tempans.txt");
 			BufferedWriter output = new BufferedWriter(
 					new OutputStreamWriter(new FileOutputStream(resultFile), "utf-8"));
 
@@ -232,7 +243,7 @@ public class TF2Vector {
 				resultFile.createNewFile();// 不存在则创建
 			}
 
-			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+			BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(inputfile), "utf-8"));
 			String line;
 			stringList = new ArrayList<String>();
 			while ((line = input.readLine()) != null) {
@@ -282,6 +293,7 @@ public class TF2Vector {
  * 
  * */
 	public static void SinglefileExector(String inputFilePath, String outputfilePath) {
+		System.out.println("SinglefileExector"+inputFilePath+" --to-- "+outputfilePath);
 		// 1-->for yes
 		// 0-->for no
 		// else-->for test
@@ -311,8 +323,8 @@ public class TF2Vector {
 			stringList = new ArrayList<String>();
 			freqList = new ArrayList<>();
 			resultMap = new HashMap<>();
+			int tempSize=0;
 			while ((line = input.readLine()) != null) {
-
 				String[] lineSplit = line.split(" ");
 			
 				if (lineSplit.length != 2)
@@ -323,7 +335,8 @@ public class TF2Vector {
 				
 				resultMap.put(lineSplit[0], Double.valueOf(lineSplit[1]));
 			}
-			
+			System.out.println(tempSize);
+			tempSize=0;
 			distance(stringList, 1);// 1 for TFIDF
 			if (forKNN) {
 				// 写入result
@@ -341,12 +354,13 @@ public class TF2Vector {
 				else if (dataType == 0)
 					output.write("-1 ");
 				for (int index = 0; index < result.size(); index++) {
+					tempSize++;
 					output.write(index + ":" + result.get(index) + " ");
 				}
 			}
 			output.write('\n');
 			input.close();
-
+System.out.println(tempSize);
 			output.close();
 			// System.out.println("将compareKey结果存到" + resultFile.getPath());
 		} catch (IOException e) {
@@ -355,7 +369,12 @@ public class TF2Vector {
 		}
 
 	}
-
+/**
+ * 
+ * @param inputTFDirPath
+ * @param outputfilePath
+ * @param dataType  1-->for yes 0-->for no
+ */
 	public static void WholeDirExector(String inputTFDirPath, String outputfilePath, int dataType) {
 		// 1-->for yes
 		// 0-->for no
@@ -453,7 +472,7 @@ public class TF2Vector {
 		 */
 		// getSingleKeyfile("D:/sharon/done/sichuan/F0B2A2DFE3939C7CD0739A857077CEA2-tf-tf.txt");
 
-		WholeDirExector("E:/data/china/ChinaForYes-TF", "E:/data/china/Target", 1);
+		WholeDirExector("E:/data/china/ChinaForNo-TF", "E:/data/china/Noisy",0);
 	}
 
 	public static void getAns(String className, int type) {

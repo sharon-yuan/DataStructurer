@@ -1,9 +1,16 @@
 package com.Suirui.DataStructurer.SQL;
 
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.Suirui.DataStructurer.InfoFinder.infoFinderExector;
 
@@ -31,8 +38,10 @@ public class SQLInfoWriter {
 			
 				PreparedStatement pstmt ;
 				pstmt= infoFinderExector.conn.prepareStatement(sql);
-			for(int index=1;index<=tempLineString.size();index++)
+			for(int index=1;index<=tempLineString.size();index++){
+				
 				pstmt.setString(index, tempLineString.get(index-1));
+				}
 			
 			System.out.println(pstmt.toString());
 			i = pstmt.executeUpdate();
@@ -45,5 +54,6 @@ public class SQLInfoWriter {
 		
 		return i;
 	}
+	
 
 }

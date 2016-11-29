@@ -120,6 +120,25 @@ public class StopWord {
         return isStopChar(word) || stopwords.contains(word);
     }
     /**
+	 * 输入字符串为停用词 则返回 false
+	 * @param key
+	 * @return
+	 */
+public static boolean JugStopWord(String key){
+	
+	if (key.length() == "是".length())
+		return false;
+	String[] stopwords = { "省", "市", "县", "州", "区", "局", "厅", "第", "次", "级", "一", "二", "三", "四", "五", "六", "七", "八",
+			"九", "十", "百", "千", "万" ,"上","下"};
+	for (String aString : stopwords) {
+		if (key.contains(aString))
+			return false;
+	}
+	StopWord.is(key);
+	return !StopWord.is(key);
+	
+}
+    /**
      * 停用词过滤，删除输入列表中的停用词
      * @param words 词列表
      */

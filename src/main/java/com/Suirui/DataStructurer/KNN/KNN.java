@@ -56,7 +56,8 @@ public class KNN {
 			testFinal=testList.subList(0, testList.size()-1);
 		else if((testList.size()+1)==dataList.size());
 		else {
-			System.err.println("testdata size error!");
+			//System.err.println("testdata size error!"+testList.size()+" "+dataList.size());
+
 		}
 		double distance = 0.0;
 		int times = 1;
@@ -117,7 +118,10 @@ public class KNN {
 
 		if (testData.size() > contrastData.size()) {
 			System.err.println("targetData.size()>contrastData.size()" + testData.size() + " " + contrastData.size());
+		
 		}
+		System.out.println("KNN.knn"+testData.size()+"/"+contrastData.size());
+		
 		double distance= calDistance(testData, contrastData);
 		pq.add(new KNNNode(0, distance, dataClassNum));
 		double mindistcan = distance;

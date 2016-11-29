@@ -11,8 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
-import com.mysql.jdbc.Buffer;
-
 public class FileIO {
 	/**
 	 * save into file
@@ -21,6 +19,9 @@ public class FileIO {
 	 * @return
 	 */
 	public static boolean saveintoFile(String filePath,String content){
+		File file=new File(filePath);
+		File dir=new File(file.getParent());
+		if(!dir.exists())dir.mkdir();
 		BufferedWriter output;
 		try {
 			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath),"utf-8"));
@@ -43,7 +44,11 @@ public class FileIO {
 		return true;
 		
 	}
-	
+	/**
+	 * FROM FILE TO STRING
+	 * @param filePath
+	 * @return
+	 */
 	public static String readfromFile(String filePath){
 		String result="",line;
 		BufferedReader input;
@@ -62,6 +67,37 @@ public class FileIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result;
+		
+	}
+	
+	public static String readfromFilewithEdge(String filePath,String edgeString){
+		String result="",line;
+		BufferedReader input;
+		try {
+			input=new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)), "utf-8"));
+			while ((line=input.readLine()) !=null){
+				if(line.contains(edgeString)){
+					String []alineArray=line.split(edgeString);
+					result+=alineArray[0];
+					input.close();
+					return result;
+				}
+				else
+				result+=line+" ";
+			}
+			input.close();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return result;
 		
 	}

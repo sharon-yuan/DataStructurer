@@ -33,7 +33,7 @@ public class LexicalAnalyzer {
 	}
 
 	public static void getAns(String className) {
-		
+	
 
 		String path = "C:/Users/wangsy/Desktop/biding/content" + className + "/";
 		File dir=new File(path);
@@ -56,7 +56,7 @@ File input=new File(filePath );
 @SuppressWarnings("unused")
 File output=new File(filePath + "-seg");
 
-WordFrequencyStatistics wordFrequencyStatistics = new WordFrequencyStatistics("word-frequency-statistics.txt",SegmentationAlgorithm.MaxNgramScore);
+WordFrequencyStatistics wordFrequencyStatistics = new WordFrequencyStatistics("word-frequency-statistics.txt",SegmentationAlgorithm.MinimumMatching);
 
 wordFrequencyStatistics.setRemoveStopWord(true);
 
@@ -72,7 +72,7 @@ wordFrequencyStatistics.setRemoveStopWord(true);
 				e.printStackTrace();
 			}
 			wordFrequencyStatistics.dump(filePath + "-seg");
-		
+		System.err.println("完成分词");
 	}
 
 	public static void wordSegFromString(String inputString) {

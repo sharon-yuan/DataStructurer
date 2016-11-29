@@ -16,8 +16,8 @@ import com.Suirui.DataStructurer.SQL.SQLInfoReader;
 
 public class CityFinder {
 public static void main(String []args){
-	while(true)
-	cityFinder("test.txt");
+	
+	System.out.println(cityFinder("test.txt"));
 }
 	public static String cityFinder(String filePath) {
 		System.gc();

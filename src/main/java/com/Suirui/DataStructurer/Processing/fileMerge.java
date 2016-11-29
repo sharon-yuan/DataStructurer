@@ -50,7 +50,10 @@ public class fileMerge {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * 合并seg文件夹
+	 * @param segFileDir
+	 */
 	public static void MergeSegDir(String segFileDir){
 
 		
@@ -59,7 +62,7 @@ public class fileMerge {
 
 		BufferedWriter output;
 		try {
-			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(segFileDir + "Merged" ),"utf-8"));
+			output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(segFileDir + "\\Merged" ),"utf-8"));
 		
 		
 		for(File f:files) {
@@ -81,24 +84,31 @@ public class fileMerge {
 		input.close();
 		output.write(s1);
 			
-		
 	
 		}
+		System.out.println("文件夹集合文件保存至"+segFileDir + "\\Merged" );
+		
 		output.close();
 		} catch ( IOException e) {
 			
 			e.printStackTrace();
 		}
-	
-		
+		LexicalAnalyzer.wordSegFromFile(segFileDir + "\\Merged" );
+		System.out.println("merged seg @"+segFileDir + "\\Merged" );
 	}
 	
 	public static void main(String []args){
-		String className="ForYes";
-		String path = "C:/Users/wangsy/Desktop/biding/content" + className + "/";
-		Merge(className);
-		System.out.println("merged!");
-		LexicalAnalyzer.wordSegFromFile(path+"Merged");
+
+		File supDir=new File("E:/data/china/grade");
+	File []dirs=supDir.listFiles();
+	for(File tempDir:dirs){
+		
+		MergeSegDir(tempDir.getAbsolutePath());
+		LexicalAnalyzer.wordSegFromFile(tempDir.getPath()+"/"+"Merged");
+	}
+	
+		
+		
 		
 	}
 public static void getAns(String className){
