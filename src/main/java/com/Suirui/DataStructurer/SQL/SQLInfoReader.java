@@ -79,14 +79,20 @@ public class SQLInfoReader {
 		return Loactions;
 	}
 
-	public static ArrayList<String> stringFormReader(String formName, ArrayList<String> attri) {
+	/**
+	 * Read info from sql table
+	 * @param tableName
+	 * @param attr
+	 * @return
+	 */
+	public static ArrayList<String> stringFormReader(String tableName, ArrayList<String> attr) {
 		ArrayList<String> resultArray = new ArrayList<>();
 		Connection conn = SQLbasic.getConn();
 
 		try {
 			Statement stmt = conn.createStatement();
 			;
-			String sql = "SELECT * FROM " + formName;
+			String sql = "SELECT * FROM " + tableName;
 			System.out.println(sql);
 			stmt.execute(sql);
 			ResultSet rs = stmt.executeQuery(sql);
@@ -94,8 +100,8 @@ public class SQLInfoReader {
 			while (rs.next()) {
 
 				String aTempString = "";
-				for (int index = 0; index < attri.size(); index++)
-					aTempString = aTempString + rs.getString(attri.get(index)) + " ";
+				for (int index = 0; index < attr.size(); index++)
+					aTempString = aTempString + rs.getString(attr.get(index)) + " ";
 				resultArray.add(aTempString);
 
 			}
@@ -125,25 +131,25 @@ public class SQLInfoReader {
 	 * 
 	 * @param formName
 	 *            city, grade....
-	 * @param attri
+	 * @param attr
 	 *            not included UID(filename)
 	 * @param Path
 	 *            ended with"/",if Path==null doesn't save data into local, save it into hashmap and return it
 	 * @param name
 	 *            filename(UID in table)
 	 */
-	public static HashMap<String, String> SQLinfoSaver(String formName, ArrayList<String> attri, String Path, String name) {
+	public static HashMap<String, String> SQLinfoSaver(String formName, ArrayList<String> attr, String Path, String name) {
 		// ArrayList<String> resultArray=new ArrayList<>();
 		Connection conn = SQLbasic.getConn();
 		HashMap<String, String> result = new HashMap<>();
 		String filename = "";
 		try {
 			Statement stmt = conn.createStatement();
-			String sumAttriString = name;
-			for (String tmpAttriString : attri) {
-				sumAttriString += ", " + tmpAttriString;
+			String sumAttrString = name;
+			for (String tempAttrsString : attr) {
+				sumAttrString += ", " + tempAttrsString;
 			}
-			String sql = "SELECT " + sumAttriString + " FROM " + formName;
+			String sql = "SELECT " + sumAttrString + " FROM " + formName;
 			System.out.println(sql);
 			stmt.execute(sql);
 			ResultSet rs = stmt.executeQuery(sql);
@@ -151,8 +157,8 @@ public class SQLInfoReader {
 			while (rs.next()) {
 				filename = rs.getString(name);
 				String aTempString = "";
-				for (String tmpAttriString : attri)
-					aTempString += rs.getString(tmpAttriString) + " ";
+				for (String tapAttrString : attr)
+					aTempString += rs.getString(tapAttrString) + " ";
 				if (Path != null)
 					FileIO.saveintoFile(Path + filename, aTempString);
 				else {
