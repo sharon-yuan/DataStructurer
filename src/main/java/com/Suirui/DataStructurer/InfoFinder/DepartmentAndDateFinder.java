@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.Suirui.DataStructurer.Util.FileIO;
+
 import java.util.HashMap;
+
 public class DepartmentAndDateFinder {
 
 	// read goverment.txt and postfix.txt
@@ -78,6 +82,187 @@ public class DepartmentAndDateFinder {
 	 * 
 	 * @Param filePath Root-filepath not dirpath!
 	 */
+	public static Map<String, String> Q12InfoFinder(String filePath) {
+		List<ArrayList<String>> governmentInfoList = null, compInfoList = null;
+		ArrayList<String> postfixInfoList = null, pagefooter = null;
+
+		try {
+			File govermentInfo = new File("government.txt");
+			File postfixInfo = new File("postfix.txt");
+			File pagefootInfo = new File("pagefooter.txt");
+			File companyInfo = new File("company.txt");
+			if (govermentInfo.exists() && postfixInfo.exists() && pagefootInfo.exists())
+				;
+			else {
+				System.err.println("government.txt or postfix.txt or pagefooter.txt doesn't exist!");
+				return null;
+			}
+			String line;
+			if (governmentInfoList == null) {
+				governmentInfoList = new ArrayList<>();
+				BufferedReader input = new BufferedReader(
+						new InputStreamReader(new FileInputStream(govermentInfo), "utf-8"));
+
+				while ((line = input.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					ArrayList<String> tempLineList = new ArrayList<>();
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						tempLineList.add(atempString);
+					}
+					governmentInfoList.add(tempLineList);
+
+				}
+				input.close();
+			}
+			if (postfixInfoList == null) {
+				postfixInfoList = new ArrayList<>();
+				BufferedReader input2 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(postfixInfo), "utf-8"));
+				while ((line = input2.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						postfixInfoList.add(atempString);
+					}
+				}
+				input2.close();
+			}
+			if (pagefooter == null) {
+				pagefooter = new ArrayList<>();
+				BufferedReader input3 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(pagefootInfo), "utf-8"));
+				while ((line = input3.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					String[] aStringList = line.split("。|；|，| ");
+					for (String tempString : aStringList) {
+						if (tempString.trim() == "")
+							continue;
+						pagefooter.add(tempString);
+
+					}
+				}
+				input3.close();
+			}
+			if (compInfoList == null) {
+				compInfoList = new ArrayList<>();
+				BufferedReader input4 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(companyInfo), "utf-8"));
+
+				while ((line = input4.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					ArrayList<String> tempLineList = new ArrayList<>();
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						tempLineList.add(atempString);
+					}
+					compInfoList.add(tempLineList);
+
+				}
+				input4.close();
+			}
+		} catch (UnsupportedEncodingException e) {
+
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		Map<String, String> InfoFinderResult = new HashMap<>();
+		preFileReader();
+
+		Map<Date, Integer> timeResultMap = new HashMap<>();
+		Map<String, Integer> departmentResultMap = new HashMap<>();
+		
+		ArrayList<String> fileContentArray = FileIO.getLinesArray(filePath);
+		// add department info to department-result map
+		List<String> resultofDfinder = departmentStringFinder(fileContentArray.get(0), governmentInfoList, compInfoList,
+				postfixInfoList, pagefooter);
+		System.out.println(fileContentArray.get(0)+resultofDfinder+" department finder");
+		for (String tempResultString : resultofDfinder) {
+
+			if (!departmentResultMap.containsKey(tempResultString))
+				departmentResultMap.put(tempResultString, 1);
+			else {
+				departmentResultMap.put(tempResultString, 1 + departmentResultMap.get(tempResultString));
+			}
+		}
+		// add time info to time-result map
+		List<Date> resultofTimefinder = DateFinder.dateFinder(fileContentArray.get(1));
+		System.out.println(resultofTimefinder+" date finder");
+		for (Date tempResultString : resultofTimefinder) {
+
+			if (!timeResultMap.containsKey(tempResultString))
+				timeResultMap.put(tempResultString, 1);
+			else {
+				timeResultMap.put(tempResultString, 1 + timeResultMap.get(tempResultString));
+			}
+		}
+		
+		int MaxVal = 0;
+		String MaxKey = "null null";
+		Date Creattime = null, Deadline = null, Max = null;
+		for (Entry<String, Integer> entry : departmentResultMap.entrySet()) {
+			if (entry.getValue() > MaxVal) {
+				MaxVal = entry.getValue();
+				MaxKey = entry.getKey();
+			}
+		}
+		MaxVal = 0;
+		for (Entry<Date, Integer> entry : timeResultMap.entrySet()) {
+			if (entry.getValue() > MaxVal) {
+				MaxVal = entry.getValue();
+				Max = entry.getKey();
+			}
+			if (Creattime == null) {
+				Creattime = entry.getKey();
+			}
+			if (Deadline == null) {
+				Deadline = entry.getKey();
+				continue;
+			}
+			if (Creattime.after(entry.getKey()))
+				Creattime = entry.getKey();
+			if (!Deadline.after(entry.getKey()))
+				Deadline = entry.getKey();
+		}
+
+		InfoFinderResult.put("Department", MaxKey);
+		if (Creattime == null)
+			InfoFinderResult.put("CreatDate", null);
+		else
+			InfoFinderResult.put("CreatDate", Creattime.toString());
+		if (Deadline == null)
+			InfoFinderResult.put("Deadline", null);
+		else
+			InfoFinderResult.put("Deadline", Deadline.toString());
+		if (Max == null)
+			InfoFinderResult.put("MaxDate", null);
+		else
+			InfoFinderResult.put("MaxDate", Max.toString());
+
+		governmentInfoList = null;
+		compInfoList = null;
+		postfixInfoList = null;
+		pagefooter = null;
+		timeResultMap = null;
+		departmentResultMap = null;
+		timeResultMap = null;
+		departmentResultMap = null;
+		return InfoFinderResult;
+	}
+
 	public static Map<String, String> infoFinder(String filePath) {
 		List<ArrayList<String>> governmentInfoList = null, compInfoList = null;
 		ArrayList<String> postfixInfoList = null, pagefooter = null;
@@ -195,8 +380,8 @@ public class DepartmentAndDateFinder {
 				int pageNumber = PagenumberGetter.dfgk(urlString);
 				if (pageNumber != 0) {
 					System.err.println("pageNumber:" + pageNumber
-							//+ " URL:" + urlString
-							);
+					// + " URL:" + urlString
+					);
 					input.close();
 					governmentInfoList = null;
 					compInfoList = null;
@@ -207,7 +392,7 @@ public class DepartmentAndDateFinder {
 					InfoFinderResult = null;
 					timeResultMap = null;
 					departmentResultMap = null;
-					
+
 					return null;
 				}
 
@@ -308,15 +493,119 @@ public class DepartmentAndDateFinder {
 		timeResultMap = null;
 		departmentResultMap = null;
 		return InfoFinderResult;
-	}
 
+	}
+	
+	public static List<String> departmentStringFinder(String inputString){
+
+		List<ArrayList<String>> governmentInfoList = null, compInfoList = null;
+		ArrayList<String> postfixInfoList = null, pagefooter = null;
+
+		try {
+			File govermentInfo = new File("government.txt");
+			File postfixInfo = new File("postfix.txt");
+			File pagefootInfo = new File("pagefooter.txt");
+			File companyInfo = new File("company.txt");
+			if (govermentInfo.exists() && postfixInfo.exists() && pagefootInfo.exists())
+				;
+			else {
+				System.err.println("government.txt or postfix.txt or pagefooter.txt doesn't exist!");
+				return null;
+			}
+			String line;
+			if (governmentInfoList == null) {
+				governmentInfoList = new ArrayList<>();
+				BufferedReader input = new BufferedReader(
+						new InputStreamReader(new FileInputStream(govermentInfo), "utf-8"));
+
+				while ((line = input.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					ArrayList<String> tempLineList = new ArrayList<>();
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						tempLineList.add(atempString);
+					}
+					governmentInfoList.add(tempLineList);
+
+				}
+				input.close();
+			}
+			if (postfixInfoList == null) {
+				postfixInfoList = new ArrayList<>();
+				BufferedReader input2 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(postfixInfo), "utf-8"));
+				while ((line = input2.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						postfixInfoList.add(atempString);
+					}
+				}
+				input2.close();
+			}
+			if (pagefooter == null) {
+				pagefooter = new ArrayList<>();
+				BufferedReader input3 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(pagefootInfo), "utf-8"));
+				while ((line = input3.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					String[] aStringList = line.split("。|；|，| ");
+					for (String tempString : aStringList) {
+						if (tempString.trim() == "")
+							continue;
+						pagefooter.add(tempString);
+
+					}
+				}
+				input3.close();
+			}
+			if (compInfoList == null) {
+				compInfoList = new ArrayList<>();
+				BufferedReader input4 = new BufferedReader(
+						new InputStreamReader(new FileInputStream(companyInfo), "utf-8"));
+
+				while ((line = input4.readLine()) != null) {
+					if (line.trim().equals(""))
+						continue;
+					ArrayList<String> tempLineList = new ArrayList<>();
+					for (String atempString : line.split(" ")) {
+						if (atempString.trim().equals(""))
+							continue;
+						tempLineList.add(atempString);
+					}
+					compInfoList.add(tempLineList);
+
+				}
+				input4.close();
+			}
+		} catch (UnsupportedEncodingException e) {
+
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+		return departmentStringFinder(inputString, governmentInfoList, compInfoList,
+				postfixInfoList, pagefooter);
+	}
 	public static List<String> departmentStringFinder(String line, List<ArrayList<String>> governmentInfoList,
 			List<ArrayList<String>> compInfoList, ArrayList<String> postfixInfoList, ArrayList<String> pagefooter) {
 		ArrayList<String> departmentResult = new ArrayList<>();
+		ArrayList<String> level2gov=new ArrayList<>();
 		int[] garde = { 0, 0, 0 };
 		// match level-1 goverment.txt + postfix.txt
 
 		for (int i = 0; i < governmentInfoList.size(); i++) {
+			
 			for (int j = 0; j < governmentInfoList.get(i).size(); j++) {
 				String supGovString = governmentInfoList.get(i).get(0), govString = governmentInfoList.get(i).get(j);
 				@SuppressWarnings("unused")
@@ -336,12 +625,21 @@ public class DepartmentAndDateFinder {
 						}
 
 						else if (line.contains(govString) && line.contains(postfixString)) {
-							if (!departmentResult.contains(supGovString + " " + govString))
-								// departmentResult.add(supGovString + " " +
-								// govString);
+							if (!level2gov.contains(supGovString + " " + govString))
+								level2gov.add(supGovString + " " +govString);
 								garde[1]++;
 							tempFlag = 1;
 							continue;
+						}
+						else {
+
+							if (!level2gov.contains(supGovString + " " + govString))
+								level2gov.add(supGovString + " " +govString);
+								garde[1]++;
+							tempFlag = 1;
+							continue;
+						
+							
 						}
 
 					}
@@ -359,16 +657,14 @@ public class DepartmentAndDateFinder {
 					}
 				}
 		}
-
+if(departmentResult.size()==0){
+	departmentResult=level2gov;
+}
 		return departmentResult;
 	}
 
 	public static void main(String[] args) {
-		Map<String, String> ans = infoFinder("test.txt");
-		for (Entry<String, String> entry : ans.entrySet()) {
-			System.out.println(entry.getKey());
-			System.out.println(entry.getValue());
-		}
-
+		
+		System.out.println(departmentStringFinder("人民政府"));
 	}
 }
