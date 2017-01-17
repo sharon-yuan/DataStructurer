@@ -2,6 +2,8 @@ package com.Suirui.DataStructurer.WordSeg;
 
 import java.io.File;
 
+import com.Suirui.DataStructurer.Processing.DirController;
+
 public class Executor {
 	
 	public static void main(String []args){
@@ -11,6 +13,9 @@ public class Executor {
 		
 		dirsWordSeg(input,output);
 		
+	}
+	public static void dirsWordSeg(String inputDirPath ){
+		dirsWordSeg(inputDirPath,DirController.DirChanger(inputDirPath, "-seg"));
 	}
 public static void dirsWordSeg(String inputDirPath,String outputDirPath) {
 	System.out.println("dir file seg. from:"+inputDirPath+" to:"+outputDirPath);

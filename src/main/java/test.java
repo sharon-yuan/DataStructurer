@@ -5,22 +5,26 @@ import com.Suirui.DataStructurer.InfoFinder.CityFinder;
 import com.Suirui.DataStructurer.InfoFinder.DateFinder;
 import com.Suirui.DataStructurer.InfoFinder.DepartmentAndDateFinder;
 import com.Suirui.DataStructurer.Util.*;
+import com.mysql.fabric.xmlrpc.base.Array;
 public class test {
 	public static void main(String args[]) {
-		File dir=new File("E:/data/china/texts/");
-		File[]files=dir.listFiles();
-		int i=0;
-		for(File tempFile:files){
-			i++;
-			ArrayList<String> fileContentList=FileIO.getLinesArray(tempFile.getAbsolutePath());
-			System.out.println(fileContentList.get(0));
-			System.out.println(DepartmentAndDateFinder.departmentStringFinder(fileContentList.get(0)));
-			System.out.println(DateFinder.dateFinder(fileContentList.get(1)));
-			String []resultCity=CityFinder.forTitile(fileContentList);
-			for(String tempccitu:resultCity)
-				System.out.println(tempccitu);
-			if(i==20)break;
+
+		ArrayList<String>result=FileIO.getLinesArray("E:/data/china/rankingTrain/train-all.txt");
+		String trainList="";
+		String testlist="";
+		String valilist="";
+		for(int i=0;i<result.size();i++){
+			if(i<100)
+				trainList+=result.get(i)+'\n';
+			else if(i<200)
+				valilist+=result.get(i)+'\n';
+			else testlist+=result.get(i)+'\n';
 		}
+		
+		FileIO.saveintoFile("E:/data/china/rankingTrain/train.txt", trainList);
+		FileIO.saveintoFile("E:/data/china/rankingTrain/test.txt", testlist);
+		FileIO.saveintoFile("E:/data/china/rankingTrain/vali.txt", valilist);
+		
 	}
 
 

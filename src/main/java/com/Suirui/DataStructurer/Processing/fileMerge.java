@@ -8,8 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 
+import com.Suirui.DataStructurer.Util.FileIO;
 import com.Suirui.DataStructurer.WordSeg.LexicalAnalyzer;
+import com.sun.tools.classfile.Opcode.Set;
 
 public class fileMerge {
 	public static void Merge(String className)  {
@@ -93,7 +96,14 @@ public class fileMerge {
 			
 			e.printStackTrace();
 		}
-		LexicalAnalyzer.wordSegFromFile(segFileDir + "\\Merged" );
+		//LexicalAnalyzer.wordSegFromFile(segFileDir + "\\Merged" );
+		HashMap<String, Integer>resultMap=FileIO.getCountedLinesMap(segFileDir + "\\Merged");
+		java.util.Set<String> keyset=resultMap.keySet();
+		String resultString="";
+		for(String tempKey:keyset){
+			resultString+=tempKey+" "+resultMap.get(tempKey)+'\n';
+			}
+		FileIO.saveintoFile(segFileDir + "\\Merged-seg",resultString);
 		System.out.println("merged seg @"+segFileDir + "\\Merged" );
 	}
 	

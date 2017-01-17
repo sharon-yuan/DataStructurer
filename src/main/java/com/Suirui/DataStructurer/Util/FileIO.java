@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FileIO {
 	/**
@@ -112,6 +113,37 @@ public class FileIO {
 			String line;
 			while ((line=input.readLine()) !=null){
 				result.add(line);}
+			input.close();
+		} catch (UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	
+		
+		return result;
+		
+	}
+	public static HashMap<String,Integer> getCountedLinesMap(String filePath) {
+		HashMap<String,Integer> result=new HashMap<>();
+		
+		BufferedReader input;
+		try {
+			input=new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)), "utf-8"));
+			String line;
+			while ((line=input.readLine()) !=null){
+				String []tempLine=line.split(" ");
+			if(result.containsKey(tempLine[0]))
+				result.put(tempLine[0], result.get(tempLine[0])+1);
+			else
+				result.put(tempLine[0], 1);
+			}
 			input.close();
 		} catch (UnsupportedEncodingException e) {
 			

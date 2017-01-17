@@ -46,7 +46,7 @@ public static final Connection conn = SQLbasic.getConn();
 			e.printStackTrace();
 		}
 		 cityList=null;	
- 		String fileDir="E:/data/china/texts/";
+ 		String fileDir="E:/data/china/textsQ34/";
  		
 		File Dir=new File(fileDir);
 		File[] dirList=Dir.listFiles();
@@ -106,7 +106,7 @@ public static final Connection conn = SQLbasic.getConn();
 		for(String tempString:tempLineString)
 			System.out.println("info--"+tempString);
 		
-		SQLInfoWriter.SQLStringListWriter("Q12Info", tempLineString);
+		SQLInfoWriter.SQLStringListWriter("Q34Info", tempLineString);
 		//tempLineString=null;
 		
 		//output.write(tempF.getPath()+'\n');

@@ -8,8 +8,19 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>DataStructurer</name>
-	<url>http://maven.apache.org</url>
+	<repositories>
+		<repository>
+			<id>my-repo</id>
+			<name>my repository</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,7 +48,37 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 		</dependency>
-
+<!-- 配置读取excel所需 -->  
+        <dependency>  
+            <groupId>dom4j</groupId>  
+            <artifactId>dom4j</artifactId>  
+            <version>1.6.1</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>xmlbeans</groupId>  
+            <artifactId>xmlbeans</artifactId>  
+            <version>2.3.0</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>org.apache.geronimo.specs</groupId>  
+            <artifactId>geronimo-stax-api_1.0_spec</artifactId>  
+            <version>1.0.1</version>  
+        </dependency>  
+        <dependency>  
+          <groupId>org.apache.poi</groupId>  
+          <artifactId>poi</artifactId>  
+          <version>3.7</version>  
+        </dependency>  
+        <dependency>  
+          <groupId>org.apache.poi</groupId>  
+          <artifactId>poi-ooxml-schemas</artifactId>  
+          <version>3.7</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>org.apache.poi</groupId>  
+            <artifactId>poi-ooxml</artifactId>  
+            <version>3.7</version>  
+        </dependency>  
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

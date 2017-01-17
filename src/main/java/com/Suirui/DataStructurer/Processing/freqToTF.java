@@ -149,7 +149,7 @@ public class freqToTF {
 	}
 	public static void main(String[] args) {
 		//wholeDirToTFStartATSupDir(new File("E:/data/china/forGrade"));
-		wholeDirToTF(new File(DirController.DirChanger("E:/data/china/dfgk-seg/", "-seg")));
+		//wholeDirToTF(new File(DirController.DirChanger("E:/data/china/dfgk-seg/", "-seg")));
 	}
 	}
 

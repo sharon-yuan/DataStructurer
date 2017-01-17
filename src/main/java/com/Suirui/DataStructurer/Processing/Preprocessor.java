@@ -28,11 +28,12 @@ public class Preprocessor {
 	 * 
 	 */
 	public static void contrastDataSet(String targetDirPath, String noiseDirPath) {
-		//word2TF(targetDirPath);
-		//word2TF(noiseDirPath);
+		// word2TF(targetDirPath);
+		// word2TF(noiseDirPath);
 
 		// chooseKeyWord
-		choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),DirController.DirChanger(noiseDirPath, "-TF"));
+		choseKeyWords.executor(DirController.DirChanger(targetDirPath, "-TF"),
+				DirController.DirChanger(noiseDirPath, "-TF"));
 
 		// get data files=>"data"
 		TF2Vector.WholeDirExector(DirController.DirChanger(targetDirPath, "-TF"), "targetResult", 1);
@@ -48,31 +49,31 @@ public class Preprocessor {
 
 			BufferedReader input = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath1)), "utf-8"));
-			while ((line = input.readLine()) != null){
-				String aStringlist[]=line.split(" ");
-				double sum=0.0;
-				for(int i=0;i<aStringlist.length-1;i++){
-					sum+=Double.valueOf(aStringlist[i]);
+			while ((line = input.readLine()) != null) {
+				String aStringlist[] = line.split(" ");
+				double sum = 0.0;
+				for (int i = 0; i < aStringlist.length - 1; i++) {
+					sum += Double.valueOf(aStringlist[i]);
 				}
-				if(sum!=0.0)
-				output.write(line + '\n');}
+				if (sum != 0.0)
+					output.write(line + '\n');
+			}
 			input.close();
-			int temp1=0;
+			int temp1 = 0;
 			BufferedReader input2 = new BufferedReader(
 					new InputStreamReader(new FileInputStream(new File(filePath2)), "utf-8"));
-			while ((line = input2.readLine()) != null)
-			{
-				String aStringlist[]=line.split(" ");
-				double sum=0.0;
-				for(int i=0;i<aStringlist.length-1;i++){
-					sum+=Double.valueOf(aStringlist[i]);
+			while ((line = input2.readLine()) != null) {
+				String aStringlist[] = line.split(" ");
+				double sum = 0.0;
+				for (int i = 0; i < aStringlist.length - 1; i++) {
+					sum += Double.valueOf(aStringlist[i]);
 				}
-				if(sum==0.0&&temp1==0){
-					temp1=1;
+				if (sum == 0.0 && temp1 == 0) {
+					temp1 = 1;
 					output.write(line + '\n');
-				}
-				else if(sum!=0.0)
- 				output.write(line + '\n');}
+				} else if (sum != 0.0)
+					output.write(line + '\n');
+			}
 			input2.close();
 			output.close();
 		} catch (IOException e) {
@@ -90,14 +91,17 @@ public class Preprocessor {
 			return;
 		}
 		System.out.println("dir file seg");
-		//Executor.dirsWordSeg(DirController.DirRoot(inputDir), DirController.DirChanger(inputDir, "-seg"));
+		//Executor.dirsWordSeg(DirController.DirRoot(inputDir),DirController.DirChanger(inputDir, "-seg"));
 		// file merged
 		// get Mergerd.txt & Merged-Seg.txt
-		//fileMerge.MergeSegDir(DirController.DirChanger(inputDir, "-seg"));
+		 System.out.println("files merging dir:" + inputDir);
+		fileMerge.MergeSegDir(DirController.DirChanger(inputDir, "-seg"));
 		System.out.println("files merged! dir:" + inputDir);
-		/*WordFrequencyStatistics.executor(DirController.DirChanger(inputDir, "-seg") + "Merged",
-				DirController.DirChanger(inputDir, "-seg") + "Merged-seg");
-*/
+		/*
+		 * WordFrequencyStatistics.executor(DirController.DirChanger(inputDir,
+		 * "-seg") + "Merged", DirController.DirChanger(inputDir, "-seg") +
+		 * "Merged-seg");
+		 */
 		// get TF
 		File dir = new File(DirController.DirChanger(inputDir, "-seg"));
 		String outDir = DirController.DirChanger(inputDir, "-TF");
@@ -105,30 +109,30 @@ public class Preprocessor {
 		if (!outDirFile.isDirectory())
 			outDirFile.mkdirs();
 		File[] files = dir.listFiles();
+		System.out.println(dir.getAbsolutePath()+" "+files.length);
 		for (File tempF : files) {
-if(!tempF.exists())
-			freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName());
+			//System.out.println(tempF.getAbsolutePath());
+			File tempTFF=new File(outDirFile+tempF.getName());
+			if (!tempTFF.exists())
+				freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName());
 		}
 
 	}
 
 	public static void main(String[] args) {
-	//String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath = "E:/data/china/ChinaForNo/";
-word2TF("E:/data/china/dfgk-seg/");
-		//contrastDataSet(targetFilePath, noiseFilePath);
+		// String targetFilePath = "E:/data/china/ChinaForYes/", noiseFilePath =
+		// "E:/data/china/ChinaForNo/";
+		word2TF("E:/data/china/textsQ34/");
+		// contrastDataSet(targetFilePath, noiseFilePath);
 		/*
-		String inputDir="E:/data/test/data/";
-		// get TF
-				File dir = new File(DirController.DirChanger(inputDir, "-seg"));
-				String outDir = DirController.DirChanger(inputDir, "-TF");
-				File outDirFile = new File(outDir);
-				if (!outDirFile.isDirectory())
-					outDirFile.mkdirs();
-				File[] files = dir.listFiles();
-				for (File tempF : files) {
-
-					freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName());
-				}*/
+		 * String inputDir="E:/data/test/data/"; // get TF File dir = new
+		 * File(DirController.DirChanger(inputDir, "-seg")); String outDir =
+		 * DirController.DirChanger(inputDir, "-TF"); File outDirFile = new
+		 * File(outDir); if (!outDirFile.isDirectory()) outDirFile.mkdirs();
+		 * File[] files = dir.listFiles(); for (File tempF : files) {
+		 * 
+		 * freqToTF.f2TF(tempF.getPath(), outDir + tempF.getName()); }
+		 */
 	}
 
 }

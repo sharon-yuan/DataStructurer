@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.Suirui.DataStructurer.Util.FileIO;
+
 public class TF2Vector {
 	private static List<String> keys;
 	private static List<Double> result;
@@ -94,14 +96,14 @@ public class TF2Vector {
 		}
 	}
 
-	
 	/**
 	 * 
-	 * @param key 
-	 * @param type type==0 欧式距离 type ==1 tfidf
+	 * @param key
+	 * @param type
+	 *            type==0 欧式距离 type ==1 tfidf
 	 */
 	private static void distance(List<String> key, int type) {
-	
+
 		result = new ArrayList<Double>();
 		for (String aString : keys) {
 			if (resultMap.containsKey(aString)) {
@@ -112,7 +114,7 @@ public class TF2Vector {
 			} else
 				result.add(0.0);
 		}
-		
+
 	}
 
 	public static void saveCodeIntoFile(String inputFilePath, String outputFilePath) throws IOException {
@@ -182,10 +184,12 @@ public class TF2Vector {
 	public static void readKeyfile() {
 		readKeyfile("chosedKeyForChina.txt");
 	}
-/**
- * save into private static List<String> keys;
- * @param filePath
- */
+
+	/**
+	 * save into private static List<String> keys;
+	 * 
+	 * @param filePath
+	 */
 	public static void readKeyfile(String filePath) {
 		keys = new ArrayList<>();
 		// 得到commonkeys
@@ -201,7 +205,7 @@ public class TF2Vector {
 					keys.add(a);
 				}
 				input.close();
-				System.out.println("keys size:"+keys.size());
+				System.out.println("keys size:" + keys.size());
 			} else {
 				System.err.println("commonkeys 不存在");
 				return;
@@ -287,13 +291,14 @@ public class TF2Vector {
 		}
 
 	}
-/*
- * 
- * 
- * 
- * */
+
+	/*
+	 * 
+	 * 
+	 * 
+	 * */
 	public static void SinglefileExector(String inputFilePath, String outputfilePath) {
-		System.out.println("SinglefileExector"+inputFilePath+" --to-- "+outputfilePath);
+		System.out.println("SinglefileExector" + inputFilePath + " --to-- " + outputfilePath);
 		// 1-->for yes
 		// 0-->for no
 		// else-->for test
@@ -323,20 +328,20 @@ public class TF2Vector {
 			stringList = new ArrayList<String>();
 			freqList = new ArrayList<>();
 			resultMap = new HashMap<>();
-			int tempSize=0;
+			int tempSize = 0;
 			while ((line = input.readLine()) != null) {
 				String[] lineSplit = line.split(" ");
-			
+
 				if (lineSplit.length != 2)
 					continue;
-			
+
 				stringList.add(lineSplit[0]);
 				freqList.add(Double.valueOf(lineSplit[1]));
-				
+
 				resultMap.put(lineSplit[0], Double.valueOf(lineSplit[1]));
 			}
 			System.out.println(tempSize);
-			tempSize=0;
+			tempSize = 0;
 			distance(stringList, 1);// 1 for TFIDF
 			if (forKNN) {
 				// 写入result
@@ -345,7 +350,7 @@ public class TF2Vector {
 				}
 				if (dataType == 1)
 					output.write("1");
-				else  if (dataType == 0)
+				else if (dataType == 0)
 					output.write("0");
 
 			} else {
@@ -360,7 +365,7 @@ public class TF2Vector {
 			}
 			output.write('\n');
 			input.close();
-System.out.println(tempSize);
+			System.out.println(tempSize);
 			output.close();
 			// System.out.println("将compareKey结果存到" + resultFile.getPath());
 		} catch (IOException e) {
@@ -369,12 +374,14 @@ System.out.println(tempSize);
 		}
 
 	}
-/**
- * 
- * @param inputTFDirPath
- * @param outputfilePath
- * @param dataType  1-->for yes 0-->for no
- */
+
+	/**
+	 * 
+	 * @param inputTFDirPath
+	 * @param outputfilePath
+	 * @param dataType
+	 *            1-->for yes 0-->for no
+	 */
 	public static void WholeDirExector(String inputTFDirPath, String outputfilePath, int dataType) {
 		// 1-->for yes
 		// 0-->for no
@@ -399,9 +406,10 @@ System.out.println(tempSize);
 					new OutputStreamWriter(new FileOutputStream(resultFile), "utf-8"));
 
 			for (File file : files) {
-			if(file.getName().contains("Merge")) continue;
+				if (file.getName().contains("Merge"))
+					continue;
 				// 比较两个文件 并将结果数组输出到result
-				//System.out.println(file.getPath());
+				// System.out.println(file.getPath());
 				if (resultFile.exists())
 					;
 				else {
@@ -423,7 +431,7 @@ System.out.println(tempSize);
 					freqList.add(Double.valueOf(lineSplit[1]));
 					resultMap.put(lineSplit[0], Double.valueOf(lineSplit[1]));
 				}
-				//System.out.println("stringlist" + stringList);
+				// System.out.println("stringlist" + stringList);
 				distance(stringList, 1);// 1 for TFIDF
 				if (forKNN) {
 					// 写入result
@@ -472,67 +480,154 @@ System.out.println(tempSize);
 		 */
 		// getSingleKeyfile("D:/sharon/done/sichuan/F0B2A2DFE3939C7CD0739A857077CEA2-tf-tf.txt");
 
-		WholeDirExector("E:/data/china/ChinaForNo-TF", "E:/data/china/Noisy",0);
+		// WholeDirExector("E:/data/china/ChinaForNo-TF", "E:/data/china/Noisy",
+		// 0);
+		/*wholeDirRF("E:/data/china/rankingTrain/content-TF/", "E:/data/china/rankingTrain/grade/",
+				"E:/data/china/rankingTrain/train-all.txt");*/
+		wholeDirRF("E:/data/china/texts-TF/", null, "E:/data/china/rankingTrain/train-allQ12.txt");
 	}
 
 	public static void getAns(String className, int type) {
 		exector(className, type);
 	}
-	
-	
+
 	/**
 	 * 
-	 * @param mode train/test
-	 * @param data 
-	 * @param target 1-5 
-	 * @param qid 1-5 the set number of train data
-	 * @return one line of tarin data for SVMRanking
+	 * @param inputTFDirPath
+	 * @param outputfilePath
+	 * @param dataType
+	 *            Ranking result
 	 */
-	public static String vector4SVMRanking(String mode, List<Double> data,int target,int qid){
-		
-		/*The file format for the training data (also testing/validation data) is the same as for SVM-Rank. This is also the format used in LETOR datasets. Each of the following lines represents one training example and is of the following format:
-		<line> .=. <target> qid:<qid> <feature>:<value> <feature>:<value> ... <feature>:<value> # <info>
-		<target> .=. <positive integer>
-		<qid> .=. <positive integer>
-		<feature> .=. <positive integer>
-		<value> .=. <float>
-		<info> .=. <string>
-		Here's an example: (taken from the SVM-Rank website). Note that everything after "#" are ignored.
-		3 qid:1 1:1 2:1 3:0 4:0.2 5:0 
-		2 qid:1 1:0 2:0 3:1 4:0.1 5:1 
-		1 qid:1 1:0 2:1 3:0 4:0.4 5:0 
-		1 qid:1 1:0 2:0 3:1 4:0.3 5:0  
-		1 qid:2 1:0 2:0 3:1 4:0.2 5:0  
-		2 qid:2 1:1 2:0 3:1 4:0.4 5:0  
-		1 qid:2 1:0 2:0 3:1 4:0.1 5:0 
-		1 qid:2 1:0 2:0 3:1 4:0.2 5:0  
-		2 qid:3 1:0 2:0 3:1 4:0.1 5:1 
-		3 qid:3 1:1 2:1 3:0 4:0.3 5:0 
-		4 qid:3 1:1 2:0 3:0 4:0.4 5:1 
-		1 qid:3 1:0 2:1 3:1 4:0.5 5:0 */
-		
-		String anString=target+ " qid:"+qid;
-		for(int i=0;i<data.size();i++){
-			if(0.0==data.get(i)) continue;
-			anString+=" "+i+":"+data.get(i);
+	public static void wholeDirRF(String inputTFDirPath, String inputGradeDirPath, String outputfilePath) {
+
+		// 1-->for yes
+		// 0-->for no
+		// else-->for test
+
+		// @classname 1.ForYes 0.ForNo 3.ForHebei
+		boolean forKNN = true;
+		try {
+
+			// String filepath = "D:/sharon/done/sichuan/";
+			// String filepath = "C:/Users/wangsy/Desktop/biding/content" +
+			// className;
+			// File dir = new File(filepath);
+			// File[] files = dir.listFiles();
+			ArrayList<String>classifyResult=FileIO.getLinesArray("E:/data/china/rankingTrain/classifyResult.txt");
+			File dir = new File(inputTFDirPath);
+			File[] files = dir.listFiles();
+
+			readKeyfile();
+
+			File resultFile = new File(outputfilePath);
+			BufferedWriter output = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(resultFile), "utf-8"));
+String filename="";
+			for (File file : files) {
+				if(!classifyResult.contains(file.getName()))continue;
+				if (file.getName().contains("Merge"))
+					continue;
+				// 比较两个文件 并将结果数组输出到result
+				// System.out.println(file.getPath());
+				if (resultFile.exists())
+					;
+				else {
+					resultFile.createNewFile();// 不存在则创建
+				}
+
+				BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"));
+				String line;
+				stringList = new ArrayList<String>();
+				freqList = new ArrayList<>();
+				resultMap = new HashMap<>();
+				while ((line = input.readLine()) != null) {
+
+					String[] lineSplit = line.split(" ");
+					if (lineSplit.length != 2)
+						continue;
+					stringList.add(lineSplit[0]);
+
+					freqList.add(Double.valueOf(lineSplit[1]));
+					resultMap.put(lineSplit[0], Double.valueOf(lineSplit[1]));
+				}
+				// System.out.println("stringlist" + stringList);
+				distance(stringList, 1);// 1 for TFIDF
+				input.close();
+				System.out.println(file.getAbsolutePath());
+				if(inputGradeDirPath!=null){
+				ArrayList<String> gradeArray = FileIO.getLinesArray(inputGradeDirPath + file.getName());
+				output.write(vector4SVMRanking(result, Double.valueOf(gradeArray.get(0)), 1));}
+				else{
+					output.write(vector4SVMRanking(result, 0, 1));
+				}
+				
+filename+=file.getName()+'\n';
+			}
+			output.close();
+FileIO.saveintoFile("E:/data/china/rankingTrain/filename.txt", filename);
+			// System.out.println("将compareKey结果存到" + resultFile.getPath());
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
 		}
-		
-		
-		return anString;
+
 	}
-	
+
 	/**
 	 * 
-	 * @param mode  train/test
-	 * @param data 
-	 * @param target 1 or 0
+	 * @param mode
+	 *            train/test
+	 * @param data
+	 * @param target
+	 *            1-5
+	 * @param qid
+	 *            1-5 the set number of train data
+	 * @return one line of train data for SVMRanking
+	 */
+	public static String vector4SVMRanking(List<Double> data, double target, int qid) {
+
+		/*
+		 * The file format for the training data (also testing/validation data)
+		 * is the same as for SVM-Rank. This is also the format used in LETOR
+		 * datasets. Each of the following lines represents one training example
+		 * and is of the following format: <line> .=. <target> qid:<qid>
+		 * <feature>:<value> <feature>:<value> ... <feature>:<value> # <info>
+		 * <target> .=. <positive integer> <qid> .=. <positive integer>
+		 * <feature> .=. <positive integer> <value> .=. <float> <info> .=.
+		 * <string> Here's an example: (taken from the SVM-Rank website). Note
+		 * that everything after "#" are ignored. 3 qid:1 1:1 2:1 3:0 4:0.2 5:0
+		 * 2 qid:1 1:0 2:0 3:1 4:0.1 5:1 1 qid:1 1:0 2:1 3:0 4:0.4 5:0 1 qid:1
+		 * 1:0 2:0 3:1 4:0.3 5:0 1 qid:2 1:0 2:0 3:1 4:0.2 5:0 2 qid:2 1:1 2:0
+		 * 3:1 4:0.4 5:0 1 qid:2 1:0 2:0 3:1 4:0.1 5:0 1 qid:2 1:0 2:0 3:1 4:0.2
+		 * 5:0 2 qid:3 1:0 2:0 3:1 4:0.1 5:1 3 qid:3 1:1 2:1 3:0 4:0.3 5:0 4
+		 * qid:3 1:1 2:0 3:0 4:0.4 5:1 1 qid:3 1:0 2:1 3:1 4:0.5 5:0
+		 */
+
+		String anString = target + " qid:" + qid;
+		for (int i = 0; i < data.size(); i++) {
+			/*
+			 * if (0.0 == data.get(i)) continue;
+			 */
+			anString += " " + (i + 1) + ":" + data.get(i);
+		}
+
+		return anString + '\n';
+	}
+
+	/**
+	 * 
+	 * @param mode
+	 *            train/test
+	 * @param data
+	 * @param target
+	 *            1 or 0
 	 * @return
 	 */
-public static String vector4KNN(String mode, List<Double> data,int target){
-	String anString="";
-	
-	return anString;
-	
-}
+	public static String vector4KNN(String mode, List<Double> data, int target) {
+		String anString = "";
+
+		return anString;
+
+	}
 
 }
